@@ -1,0 +1,64 @@
+.node {
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+}
+
+.row {
+  display: flex;
+  height: 1.5rem;
+  padding: 0.25rem 0;
+  align-items: center;
+  cursor: pointer;
+
+  transition: background-color 0.15s ease-in-out,
+              color 0.15s ease-in-out;
+
+  &[data-is-selected=true] {
+    background-color: $selected-node-bg;
+
+    & > .name {
+      color: $selected-node-color;
+    }
+
+    & > .expand > .toggle-arrow {
+      fill: $selected-node-color;
+    }
+
+    & > .icon {
+      fill: $selected-node-color;
+    }
+  }
+}
+
+.expand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 1.5rem;
+  width: 1.5rem;
+
+  &[data-toggle-direction=right] {
+    .toggle-arrow {
+      transform: rotate(-90deg);
+    }
+  }
+}
+
+.toggle-arrow {
+  transition: transform 0.15s ease-in-out;
+  fill: $node-color;
+  width: 0.625rem;
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0 0.5rem 0 0.25rem;
+}
+
+.name {
+  height: 1.5rem;
+  line-height: 1.5;
+  color: $node-color;
+}

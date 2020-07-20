@@ -1,0 +1,39 @@
+<div local-class="node">
+  <div
+    local-class="row"
+    data-is-selected={{if @node.isSelected "true" "false"}}
+    {{on "click" this.handleClick}}>
+    <div
+      local-class="expand"
+      data-toggle-direction={{if @node.isExpanded "down" "right"}}>
+      {{#if @node.childNodes}}
+        <svg
+          local-class="toggle-arrow"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 320 320">
+          <path d="M41.000001 76.475H279c21.4 0 32.1 25.9 17 41l-119 119c-9.4 9.4-24.6 9.4-33.9 0l-119.099999-119c-15.1000001-15.1-4.4-41 17-41z"/>
+        </svg>
+      {{/if}}
+    </div>
+    {{#if (or @node.icon @icon)}}
+      {{svg-jar (or @node.icon @icon) class=(local-class "icon")}}
+    {{/if}}
+    <div local-class="name">
+      {{@node.name}}
+    </div>
+  </div>
+
+  <AnimatedContainer>
+    {{#animated-if
+      (and @node.childNodes.length @node.isExpanded)
+      use=this.transition
+      duration=150
+      }}
+      <NodeTree
+        @icon={{@icon}}
+        @isChild={{true}}
+        @nodes={{@node.childNodes}}
+        @onSelection={{@onSelection}} />
+    {{/animated-if}}
+  </AnimatedContainer>
+</div>

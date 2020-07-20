@@ -1,0 +1,21 @@
+.container {
+  margin: 0.5rem 0;
+  border: 1px solid rgba(0,0,0,0.05);
+  padding-bottom: 1rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  background-color: rgba(0,0,0,0.05);
+  padding: 0.25rem;
+}
+
+.action {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  margin-right: 0.25rem;
+  background-color: transparent;
+}

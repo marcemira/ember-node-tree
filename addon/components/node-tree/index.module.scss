@@ -1,0 +1,8 @@
+.node-tree {
+  display: flex;
+  flex-direction: column;
+
+  &[data-is-child=true] {
+    margin-left: 1rem;
+  }
+}

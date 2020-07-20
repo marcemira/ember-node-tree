@@ -1,0 +1,13 @@
+<div local-class="container">
+  <div local-class="actions">
+    {{#each this.actions as |action|}}
+      <button
+        local-class="action"
+        title={{action.name}}>
+        {{svg-jar action.icon class=(local-class "icon")}}
+      </button>
+    {{/each}}
+  </div>
+
+  {{yield (hash nodes=@nodes onSelection=this.onSelection)}}
+</div>

@@ -1,0 +1,14 @@
+<div
+  local-class="node-tree"
+  data-is-child={{if @isChild "true" "false"}} >
+  {{#each @nodes as |node|}}
+    {{#if (has-block)}}
+      {{yield node}}
+    {{else}}
+      <Node
+        @node={{node}}
+        @icon={{@icon}}
+        @onSelection={{this.handleSelection}} />
+    {{/if}}
+  {{/each}}
+</div>

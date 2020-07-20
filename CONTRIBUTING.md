@@ -3,7 +3,7 @@
 ## Installation
 
 * `git clone <repository-url>`
-* `cd ember-folder-tree`
+* `cd ember-node-tree`
 * `yarn install`
 
 ## Linting

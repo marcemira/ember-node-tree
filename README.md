@@ -1,4 +1,4 @@
-ember-folder-tree
+ember-node-tree
 ==============================================================================
 
 [Short description of the addon.]
@@ -16,7 +16,7 @@ Installation
 ------------------------------------------------------------------------------
 
 ```
-ember install ember-folder-tree
+ember install ember-node-tree
 ```
 
 
