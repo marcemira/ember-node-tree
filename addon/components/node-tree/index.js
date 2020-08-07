@@ -1,21 +1,27 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
+import { arg } from 'ember-arg-types';
+import { object } from 'prop-types';
 
 export default class NodeTreeComponent extends Component {
+  @arg(object)
+  actionsAPI;
+
   @action
   async handleSelection (node) {
     const parent = await node.parentNode;
-    const rootNode =  parent ? await this._findRoot(parent) : node;
+    const nodeSelectedInitialState = node.isSelected;
+    const rootNode = parent ? await this._findRoot(parent) : node;
 
     if (rootNode.childNodes?.length) {
       rootNode.isSelected = false;
       this._childrenDeselecting(rootNode.childNodes);
     }
 
-    node.isSelected = !node.isSelected;
+    node.isSelected = !nodeSelectedInitialState;
 
-    if (this.args.onSelection && typeof this.args.onSelection === 'function') {
-      this.args.onSelection(node);
+    if (this.actionsAPI) {
+      this.actionsAPI.onSelection(node);
     }
   }
 

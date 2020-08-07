@@ -28,12 +28,14 @@
       (and @node.childNodes.length @node.isExpanded)
       use=this.transition
       duration=150
-      }}
+    }}
       <NodeTree
         @icon={{@icon}}
         @isChild={{true}}
         @nodes={{@node.childNodes}}
-        @onSelection={{@onSelection}} />
+        @onSelection={{@onSelection}}
+        @actionsAPI={{@actionsAPI}}
+      />
     {{/animated-if}}
   </AnimatedContainer>
 </div>

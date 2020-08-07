@@ -1,8 +1,25 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { arg } from 'ember-arg-types';
+import { any, func } from 'prop-types';
 
 export default class NodeActionsComponent extends Component {
+  @arg(any.isRequired)
+  nodes;
+
+  @arg(func)
+  onSelection;
+
+  @arg(func)
+  onAdd;
+
+  @arg(func)
+  onRemove;
+
+  @tracked selectedNode;
+  @tracked nodeActions;
+
   baseActions = [
     {
       name: 'Add',
@@ -16,29 +33,45 @@ export default class NodeActionsComponent extends Component {
     },
   ];
 
-  @tracked selectedNode;
-
   constructor() {
     super(...arguments);
-    this.actions = [...this.baseActions, this.args.actions];
+    this.nodeActions = [...this.baseActions, this.args.actions];
+  }
+
+  get noneSelected () {
+    return !this.selectedNode;
+  }
+
+  get API () {
+    return {
+      onSelection: this.handleOnSelection
+    };
   }
 
   @action
-  onSelection (node) {
-    this.selectedNode = node;
+  handleOnSelection (node) {
+    this.selectedNode = node === this.selectedNode ? null : node;
 
-    if (this.args.onSelection && typeof this.args.onSelection === 'function') {
-      this.args.onSelection(node);
+    if (this.onSelection) {
+      this.onSelection(node);
     }
   }
 
   @action
-  addNode () {
+  execute (actionObject) {
+    const node = this.selectedNode;
+    const tree = this.nodes;
+
+    actionObject.action(node, tree);
+  }
+
+  @action
+  addNode (node, tree) {
     debugger;
   }
 
   @action
-  removeNode () {
+  removeNode (node, tree) {
     debugger;
   }
 }
