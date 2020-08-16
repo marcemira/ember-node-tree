@@ -24,6 +24,10 @@
     transform: translateY(1px);
   }
 
+  &:focus {
+    outline: none;
+  }
+
   &:hover {
     cursor: pointer;
     background-color: rgba(0,0,0,0.05);
