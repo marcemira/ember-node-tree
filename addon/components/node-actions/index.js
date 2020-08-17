@@ -3,7 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { arg } from 'ember-arg-types';
-import { any, func, string, boolean } from 'prop-types';
+import { any, func, string, boolean, array } from 'prop-types';
 
 const NODE_MODEL_NAME = 'node';
 const NODE_PARENT_NODE_PROPERTY_NAME = 'parentNode';
@@ -42,6 +42,9 @@ export default class NodeActionsComponent extends Component {
   @arg(string)
   childNodesName = NODE_CHILD_NODE_PROPERTY_NAME;
 
+  @arg(array)
+  additionalActions = [];
+
   @tracked selectedNode;
   @tracked nodeActions;
 
@@ -60,7 +63,7 @@ export default class NodeActionsComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.nodeActions = [...this.baseActions, this.args.actions];
+    this.nodeActions = [...this.baseActions, ...this.additionalActions];
   }
 
   get noneSelected () {
@@ -127,38 +130,40 @@ export default class NodeActionsComponent extends Component {
       }
     }
 
-    const parentNode = await node[this.parentNodeName];
+    const childNodes = await node[this.childNodesName];
 
-    if (parentNode) {
-      if (node[this.childNodesName]) {
-        this._removeChildNodes(node);
-      } else {
-        parentNode[this.childNodesName].removeObject(node);
-      }
-
-      parentNode[this.childNodesName].removeObject(node);
+    if (childNodes && childNodes.length) {
+      this._removeChildNodes(node);
     }
+
+    const parentNode = await node[this.parentNodeName];
 
     if (this.onRemove) {
       this.onRemove(node);
+    } else {
+      if (parentNode) {
+        parentNode[this.childNodesName].removeObject(node);
+      }
     }
 
     this.selectedNode = null;
   }
 
   _removeChildNodes(parentNode) {
-    const childNodes = parentNode[this.childNodesName];
+    if(parentNode) {
+      const childNodes = parentNode[this.childNodesName] || null;
 
-    if (childNodes) {
-      childNodes.forEach(node => {
-        this._removeChildNodes(node);
+      if (childNodes && childNodes.length) {
+        childNodes.forEach(node => {
+          this._removeChildNodes(node);
 
-        parentNode[this.childNodesName].removeObject(node);
-
-        if (this.onRemove) {
-          this.onRemove(node);
-        }
-      });
+          if (this.onRemove) {
+            this.onRemove(node);
+          } else {
+            parentNode[this.childNodesName].removeObject(node);
+          }
+        });
+      }
     }
   }
 }
