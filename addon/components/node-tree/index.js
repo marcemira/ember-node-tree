@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { action } from '@ember/object';
+import { set, action } from '@ember/object';
 import { arg } from 'ember-arg-types';
 import { object } from 'prop-types';
 
@@ -14,11 +14,11 @@ export default class NodeTreeComponent extends Component {
     const rootNode = parent ? await this._findRoot(parent) : node;
 
     if (rootNode.childNodes?.length) {
-      rootNode.isSelected = false;
+      set(rootNode, 'isSelected', false);
       this._childrenDeselecting(rootNode.childNodes);
     }
 
-    node.isSelected = !nodeSelectedInitialState;
+    set(node, 'isSelected', !nodeSelectedInitialState);
 
     if (this.actionsAPI) {
       this.actionsAPI.onSelection(node);
@@ -37,7 +37,7 @@ export default class NodeTreeComponent extends Component {
 
   _childrenDeselecting(nodes) {
     nodes.forEach(node => {
-      node.isSelected = false;
+      set(node, 'isSelected', false);
 
       if (node.childNodes?.length) {
         this._childrenDeselecting(node.childNodes);

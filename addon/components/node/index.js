@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
+import { set, action } from '@ember/object';
 import { fadeIn, fadeOut } from 'ember-animated/motions/opacity';
 import move from 'ember-animated/motions/move';
 import { arg } from 'ember-arg-types';
@@ -15,7 +15,7 @@ export default class NodeComponent extends Component {
 
   @action
   handleClick () {
-    this.node.isExpanded = !this.node.isExpanded;
+    set(this.node, 'isExpanded', !this.node.isExpanded);
 
     if (this.onSelection) {
       this.onSelection(this.node);
