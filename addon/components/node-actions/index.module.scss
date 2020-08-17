@@ -35,5 +35,9 @@
 
   &[disabled] {
     opacity: 0.5;
+
+    .icon {
+      color: opacify($color: $node-color, $amount: 0.5);
+    }
   }
 }
