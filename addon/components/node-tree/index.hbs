@@ -1,6 +1,5 @@
 <div
-  local-class="node-tree"
-  data-is-child={{if @isChild "true" "false"}} >
+  local-class="node-tree">
   {{#each @nodes as |node|}}
     {{#if (has-block)}}
       {{yield node}}

@@ -1,6 +1,8 @@
 <div local-class="node">
   <div
+    role="button"
     local-class="row"
+    style={{this.computedStyle}}
     data-is-selected={{if @node.isSelected "true" "false"}}
     {{on "click" this.handleClick}}>
     <div
@@ -31,7 +33,6 @@
     }}
       <NodeTree
         @icon={{@icon}}
-        @isChild={{true}}
         @nodes={{@node.childNodes}}
         @onSelection={{@onSelection}}
         @actionsAPI={{@actionsAPI}}
