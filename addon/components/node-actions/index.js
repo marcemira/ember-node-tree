@@ -1,9 +1,11 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
+import { action, set } from '@ember/object';
 import { arg } from 'ember-arg-types';
-import { any, func, string, boolean, array } from 'prop-types';
+import { sort } from '@ember/object/computed';
+import { any, func, string, boolean, array, node, object } from 'prop-types';
+import { assert } from '@ember/debug';
 
 const NODE_MODEL_NAME = 'node';
 const NODE_PARENT_NODE_PROPERTY_NAME = 'parentNode';
@@ -45,25 +47,61 @@ export default class NodeActionsComponent extends Component {
   @arg(array)
   additionalActions = [];
 
+  @arg(object)
+  customOrder;
+
   @tracked selectedNode;
-  @tracked nodeActions;
+
+  nodeActionsSorting = ['order'];
 
   baseActions = [
     {
-      name: 'Add',
+      title: 'Add',
+      name: 'add',
       icon: 'add',
       action: this.addNode,
+      order: 0,
     },
     {
-      name: 'Remove',
+      title: 'Remove',
+      name: 'remove',
       icon: 'remove',
       action: this.removeNode,
+      order: 1,
     },
   ];
 
-  constructor() {
+  @sort('nodeActions', 'nodeActionsSorting') sortedNodeActions;
+
+  constructor () {
     super(...arguments);
-    this.nodeActions = [...this.baseActions, ...this.additionalActions];
+
+    if (this.additionalActions) {
+      this._checkAdditionalActions();
+    }
+
+    if (this.customOrder) {
+      this._checkCustomOrder(this.nodeActions);
+    }
+  }
+
+  get nodeActions () {
+    let nodeActions = [
+      ...this.baseActions,
+      ...this.additionalActions
+    ];
+
+    if (this.customOrder) {
+      for (const actionName in this.customOrder) {
+        const action = nodeActions.find(nodeAction =>
+          nodeAction.name === actionName
+        );
+
+        set(action, 'order', this.customOrder[actionName]);
+      }
+    }
+
+    return nodeActions;
   }
 
   get noneSelected () {
@@ -164,6 +202,32 @@ export default class NodeActionsComponent extends Component {
           }
         });
       }
+    }
+  }
+
+  _checkAdditionalActions() {
+    for (const action of this.additionalActions) {
+      try {
+        assert('Action must have a name', typeof action.name === 'string');
+        assert('Action must have an icon', typeof action.icon === 'string');
+        assert('Action must have a title', typeof action.title === 'string');
+        assert('Action must have a order', typeof action.order === 'number');
+        assert('Action must have a function', typeof action.action === 'function');
+      } catch (failedAssertion) {
+        console.error(action, failedAssertion);
+      }
+    }
+  }
+
+  _checkCustomOrder(nodeActions) {
+    try {
+      for (const nodeAction of nodeActions) {
+        for (const order in this.customOrder) {
+          assert(`Must define an order for \`${nodeAction.name}\` action, on customOrder object argument`, this.customOrder.hasOwnProperty(nodeAction.name));
+        }
+      }
+    } catch (failedAssertion) {
+      console.error(action, failedAssertion);
     }
   }
 }
