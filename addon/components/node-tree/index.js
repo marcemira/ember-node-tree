@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { set, action } from '@ember/object';
 import { arg } from 'ember-arg-types';
-import { object, string } from 'prop-types';
+import { object, string, number } from 'prop-types';
 
 const NODE_PARENT_NODE_PROPERTY_NAME = 'parentNode';
 const NODE_CHILD_NODE_PROPERTY_NAME = 'childNodes';
@@ -15,6 +15,9 @@ export default class NodeTreeComponent extends Component {
 
   @arg(string)
   childNodesName = NODE_CHILD_NODE_PROPERTY_NAME;
+
+  @arg(number)
+  expandToDepth;
 
   @action
   async handleSelection (node) {

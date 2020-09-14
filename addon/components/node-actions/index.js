@@ -152,6 +152,7 @@ export default class NodeActionsComponent extends Component {
     }
 
     parentNode[this.childNodesName].pushObject(newNode);
+    parentNode.isExpanded = true;
 
     if (this.onAdd) {
       this.onAdd(newNode);
