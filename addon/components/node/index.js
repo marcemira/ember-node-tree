@@ -34,7 +34,7 @@ export default class NodeComponent extends Component {
       const depth = this.nodeDepth;
 
       if (depth <= this.expandToDepth) {
-        set(this.node, 'isExpanded', true);
+        this.node.isExpanded = true;
       }
     }
   }
