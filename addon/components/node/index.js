@@ -5,6 +5,7 @@ import { fadeIn, fadeOut } from 'ember-animated/motions/opacity';
 import move from 'ember-animated/motions/move';
 import { arg } from 'ember-arg-types';
 import { object, string, func, number } from 'prop-types';
+import { next } from '@ember/runloop';
 
 const NODE_PARENT_NODE_PROPERTY_NAME = 'parentNode';
 const NODE_CHILD_NODE_PROPERTY_NAME = 'childNodes';
@@ -31,11 +32,13 @@ export default class NodeComponent extends Component {
     super(...arguments);
 
     if (this.expandToDepth) {
-      const depth = this.nodeDepth;
+      next(this, () => {
+        const depth = this.nodeDepth;
 
-      if (depth <= this.expandToDepth) {
-        this.node.isExpanded = true;
-      }
+        if (depth <= this.expandToDepth) {
+          this.node.isExpanded = true;
+        }
+      });
     }
   }
 
