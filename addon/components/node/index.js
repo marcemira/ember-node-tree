@@ -4,8 +4,9 @@ import { get, set, action } from '@ember/object';
 import { fadeIn, fadeOut } from 'ember-animated/motions/opacity';
 import move from 'ember-animated/motions/move';
 import { arg } from 'ember-arg-types';
-import { object, string, func } from 'prop-types';
 import { htmlSafe } from '@ember/string';
+import { object, string, func, number } from 'prop-types';
+import { next } from '@ember/runloop';
 
 const NODE_PARENT_NODE_PROPERTY_NAME = 'parentNode';
 const NODE_CHILD_NODE_PROPERTY_NAME = 'childNodes';
@@ -24,6 +25,23 @@ export default class NodeComponent extends Component {
 
   @arg(string)
   childNodesName = NODE_CHILD_NODE_PROPERTY_NAME;
+
+  @arg(number)
+  expandToDepth;
+
+  constructor () {
+    super(...arguments);
+
+    if (this.expandToDepth) {
+      next(this, () => {
+        const depth = this.nodeDepth;
+
+        if (depth <= this.expandToDepth) {
+          this.node.isExpanded = true;
+        }
+      });
+    }
+  }
 
   get nodeDepth () {
     let parent = get(this.node, this.parentNodeName);
