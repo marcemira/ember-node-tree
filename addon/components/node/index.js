@@ -4,6 +4,7 @@ import { get, set, action } from '@ember/object';
 import { fadeIn, fadeOut } from 'ember-animated/motions/opacity';
 import move from 'ember-animated/motions/move';
 import { arg } from 'ember-arg-types';
+import { htmlSafe } from '@ember/string';
 import { object, string, func, number } from 'prop-types';
 import { next } from '@ember/runloop';
 
@@ -60,7 +61,7 @@ export default class NodeComponent extends Component {
     const depth = this.nodeDepth;
     const computedDepth = depth * NODE_DEPTH_LEFT_PADDING_AMOUNT
 
-    return `padding-left: ${computedDepth}${NODE_DEPTH_LEFT_PADDING_UNIT};`;
+    return htmlSafe(`padding-left: ${computedDepth}${NODE_DEPTH_LEFT_PADDING_UNIT};`);
   }
 
   @action
