@@ -1,6 +1,6 @@
 .container {
   margin: 0.5rem 0;
-  border: 1px solid rgba(0,0,0,0.05);
+  border: 1px solid var(--node-tree-shape-color);
   padding-bottom: 1rem;
 }
 
@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
-  background-color: rgba(0,0,0,0.05);
+  background-color: var(--node-tree-shape-color);
   padding: 0.25rem;
 }
 
@@ -30,14 +30,14 @@
 
   &:hover {
     cursor: pointer;
-    background-color: rgba(0,0,0,0.05);
+    background-color: var(--node-tree-shape-color);
   }
 
   &[disabled] {
     opacity: 0.5;
 
     .icon {
-      color: opacify($color: $node-color, $amount: 0.5);
+      color: var(--node-tree-text-color-disabled);
     }
   }
 }

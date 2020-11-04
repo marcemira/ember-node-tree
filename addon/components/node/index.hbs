@@ -1,9 +1,11 @@
-<div local-class="node">
+<div
+  local-class="node">
   <div
     role="button"
     local-class="row"
     style={{this.computedStyle}}
     data-is-selected={{if @node.isSelected "true" "false"}}
+    data-is-hidden={{if @node.isHidden "true" "false"}}
     {{on "click" this.handleClick}}>
     <div
       local-class="expand"
@@ -17,12 +19,16 @@
         </svg>
       {{/if}}
     </div>
-    {{#if (or @node.icon @icon)}}
-      {{svg-jar (or @node.icon @icon) class=(local-class "icon")}}
+    {{#if (has-block)}}
+      {{yield}}
+    {{else}}
+      {{#if (or @node.icon @icon)}}
+        {{svg-jar (or @node.icon @icon) class=(local-class "icon")}}
+      {{/if}}
+      <div local-class="name">
+        {{@node.name}}
+      </div>
     {{/if}}
-    <div local-class="name">
-      {{@node.name}}
-    </div>
   </div>
 
   <AnimatedContainer>

@@ -15,18 +15,30 @@
               color 0.15s ease-in-out;
 
   &[data-is-selected=true] {
-    background-color: $selected-node-bg;
+    background-color: var(--node-tree-selected-background);
 
     & > .name {
-      color: $selected-node-color;
+      color: var(--node-tree-selected-text-color);
     }
 
     & > .expand > .toggle-arrow {
-      fill: $selected-node-color;
+      fill: var(--node-tree-selected-text-color);
     }
 
     & > .icon {
-      fill: $selected-node-color;
+      fill: var(--node-tree-selected-text-color);
+    }
+  }
+
+  &[data-is-hidden=true] {
+    background-color: var(--node-tree-hidden-background);
+
+    & > .name {
+      color: var(--node-tree-hidden-text-color);
+    }
+
+    svg {
+      color: var(--node-tree-hidden-text-color);
     }
   }
 }
@@ -47,7 +59,7 @@
 
 .toggle-arrow {
   transition: transform 0.15s ease-in-out;
-  fill: $node-color;
+  fill: var(--node-tree-text-color);
   width: 0.625rem;
 }
 
@@ -61,5 +73,5 @@
 .name {
   height: 1.5rem;
   line-height: 1.5;
-  color: $node-color;
+  color: var(--node-tree-text-color);
 }

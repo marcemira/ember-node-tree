@@ -1,7 +1,19 @@
-$primary: #20b2aa;
+$node-tree-primary-color: #1fb2aa;
+$node-tree-text-color: #454545;
+$node-tree-shape-color: rgba(0,0,0,0.05);
+$node-tree-text-color-disabled: rgba($node-tree-text-color, .5);
+$node-tree-selected-background: rgba($node-tree-primary-color, .1);
+$node-tree-selected-text-color: darken($node-tree-primary-color, 25%);
+$node-tree-hidden-background: #F9FBFD;
+$node-tree-hidden-text-color: #95AAC9;
 
-$node-color: #464646;
-
-$selected-node-bg: rgba($primary, 0.1);
-$selected-node-color: darken($primary, 25%);
-
+root {
+  --node-tree-primary-color: $node-tree-primary-color;
+  --node-tree-text-color: $node-tree-text-color;
+  --node-tree-shape-color: $node-tree-shape-color;
+  --node-tree-text-color-disabled: $node-tree-text-color-disabled;
+  --node-tree-selected-background: $node-tree-selected-background;
+  --node-tree-selected-text-color: $node-tree-selected-text-color;
+  --node-tree-hidden-text-color: $node-tree-hidden-text-color;
+  --node-tree-hidden-text-color: $node-tree-hidden-text-color;
+}
