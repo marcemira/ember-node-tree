@@ -1,61 +1,42 @@
 import Component from '@glimmer/component';
-import { set, action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import { arg } from 'ember-arg-types';
-import { object, string, number } from 'prop-types';
-
-const NODE_PARENT_NODE_PROPERTY_NAME = 'parentNode';
-const NODE_CHILD_NODE_PROPERTY_NAME = 'childNodes';
+import { func, any, boolean } from 'prop-types';
+import { action } from '@ember/object';
 
 export default class NodeTreeComponent extends Component {
-  @arg(object)
-  actionsAPI;
+  @arg(any.isRequired)
+  nodes;
 
-  @arg(string)
-  parentNodeName = NODE_PARENT_NODE_PROPERTY_NAME;
+  @arg(func)
+  onSelection;
 
-  @arg(string)
-  childNodesName = NODE_CHILD_NODE_PROPERTY_NAME;
+  @arg(boolean)
+  hasContainer = true;
 
-  @arg(number)
-  expandToDepth;
+  @tracked selectedNode;
+
+  get nodeTreeAPI () {
+    return {
+      onSelection: this.handleOnSelection,
+      executeAction: this.executeAction
+    };
+  }
 
   @action
-  async handleSelection (node) {
-    const parent = await node[this.parentNodeName];
-    const nodeSelectedInitialState = node.isSelected;
-    const rootNode = parent ? await this._findRoot(parent) : node;
+  handleOnSelection (node) {
+    this.selectedNode = node === this.selectedNode ? null : node;
 
-    if (rootNode[this.childNodesName]?.length) {
-      set(rootNode, 'isSelected', false);
-      this._childrenDeselecting(rootNode[this.childNodesName]);
-    }
-
-    set(node, 'isSelected', !nodeSelectedInitialState);
-
-    if (this.actionsAPI) {
-      this.actionsAPI.onSelection(node);
+    if (this.onSelection) {
+      this.onSelection(node);
     }
   }
 
-  async _findRoot(node) {
-    const parentNode = await node[this.parentNodeName];
+  @action
+  executeAction (actionObject) {
+    const node = this.selectedNode;
+    const tree = this.nodes;
 
-    if (parentNode) {
-      return this._findRoot(parentNode);
-    }
-
-    return node;
-  }
-
-  _childrenDeselecting(nodes) {
-    nodes.forEach(node => {
-      if (!node.isLoading) {
-        set(node, 'isSelected', false);
-
-        if (node[this.childNodesName]?.length) {
-          this._childrenDeselecting(node[this.childNodesName]);
-        }
-      }
-    });
+    actionObject.action(node, tree);
   }
 }

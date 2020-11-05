@@ -7,13 +7,14 @@ import { arg } from 'ember-arg-types';
 import { htmlSafe } from '@ember/string';
 import { object, string, func, number } from 'prop-types';
 import { next } from '@ember/runloop';
+import {
+  NODE_PARENT_NODE_PROPERTY_NAME,
+  NODE_CHILD_NODE_PROPERTY_NAME,
+  NODE_DEPTH_LEFT_PADDING_AMOUNT,
+  NODE_DEPTH_LEFT_PADDING_UNIT
+} from 'ember-node-tree/utils/default-settings';
 
-const NODE_PARENT_NODE_PROPERTY_NAME = 'parentNode';
-const NODE_CHILD_NODE_PROPERTY_NAME = 'childNodes';
-const NODE_DEPTH_LEFT_PADDING_AMOUNT = 1;
-const NODE_DEPTH_LEFT_PADDING_UNIT = 'rem'
-
-export default class NodeComponent extends Component {
+export default class NodeTreeNodeComponent extends Component {
   @arg(object.isRequired)
   node;
 
@@ -55,6 +56,10 @@ export default class NodeComponent extends Component {
     }
 
     return depth;
+  }
+
+  get icon () {
+    return this.node?.icon || this.args.icon;
   }
 
   get computedStyle () {

@@ -20,10 +20,10 @@
       {{/if}}
     </div>
     {{#if (has-block)}}
-      {{yield}}
+      {{yield @node}}
     {{else}}
-      {{#if (or @node.icon @icon)}}
-        {{svg-jar (or @node.icon @icon) class=(local-class "icon")}}
+      {{#if this.icon}}
+        {{svg-jar (or this.icon) class=(local-class "icon")}}
       {{/if}}
       <div local-class="name">
         {{@node.name}}
@@ -37,11 +37,10 @@
       use=this.transition
       duration=150
     }}
-      <NodeTree
+      <NodeTree::Tree
         @icon={{@icon}}
         @nodes={{@node.childNodes}}
-        @onSelection={{@onSelection}}
-        @actionsAPI={{@actionsAPI}}
+        @nodeTreeAPI={{@nodeTreeAPI}}
         @expandToDepth={{@expandToDepth}}
       />
     {{/animated-if}}

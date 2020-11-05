@@ -3,22 +3,22 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 
-module('Integration | Component | node-actions', function(hooks) {
+module('Integration | Component | node-tree/actions/action', function(hooks) {
   setupRenderingTest(hooks);
 
   test('it renders', async function(assert) {
     // Set any properties with this.set('myProperty', 'value');
     // Handle any actions with this.set('myAction', function(val) { ... });
 
-    await render(hbs`<NodeActions />`);
+    await render(hbs`<NodeTree::Actions::Action />`);
 
     assert.equal(this.element.textContent.trim(), '');
 
     // Template block usage:
     await render(hbs`
-      <NodeActions>
+      <NodeTree::Actions::Action>
         template block text
-      </NodeActions>
+      </NodeTree::Actions::Action>
     `);
 
     assert.equal(this.element.textContent.trim(), 'template block text');

@@ -1,16 +1,16 @@
 <div
-  local-class="node-tree">
-  {{#each @nodes as |node|}}
-    {{#if (has-block)}}
-      {{yield node}}
-    {{else}}
-      <Node
-        @node={{node}}
-        @icon={{@icon}}
-        @onSelection={{this.handleSelection}}
-        @actionsAPI={{@actionsAPI}}
-        @expandToDepth={{@expandToDepth}}
-      />
-    {{/if}}
-  {{/each}}
+  local-class="node-tree"
+  data-container={{to-string this.hasContainer}}>
+  {{yield
+    (hash
+      Actions=(component "node-tree/actions"
+        nodes=this.nodes
+        nodeTreeAPI=this.nodeTreeAPI
+      )
+      Tree=(component "node-tree/tree"
+        nodes=this.nodes
+        nodeTreeAPI=this.nodeTreeAPI
+      )
+    )
+  }}
 </div>

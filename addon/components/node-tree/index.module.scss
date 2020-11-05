@@ -1,4 +1,10 @@
 .node-tree {
   display: flex;
   flex-direction: column;
+
+  &[data-container=true] {
+    margin: 0.5rem 0;
+    border: 1px solid var(--node-tree-shape-color);
+    padding-bottom: 1rem;
+  }
 }
