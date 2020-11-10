@@ -7,13 +7,12 @@ import { arg } from 'ember-arg-types';
 import { htmlSafe } from '@ember/string';
 import { object, string, func, number } from 'prop-types';
 import { next } from '@ember/runloop';
+import {
+  NODE_DEPTH_LEFT_PADDING_AMOUNT,
+  NODE_DEPTH_LEFT_PADDING_UNIT
+} from 'ember-node-tree/utils/default-settings';
 
-const NODE_PARENT_NODE_PROPERTY_NAME = 'parentNode';
-const NODE_CHILD_NODE_PROPERTY_NAME = 'childNodes';
-const NODE_DEPTH_LEFT_PADDING_AMOUNT = 1;
-const NODE_DEPTH_LEFT_PADDING_UNIT = 'rem'
-
-export default class NodeComponent extends Component {
+export default class NodeTreeNodeComponent extends Component {
   @arg(object.isRequired)
   node;
 
@@ -21,13 +20,19 @@ export default class NodeComponent extends Component {
   onSelection;
 
   @arg(string)
-  parentNodeName = NODE_PARENT_NODE_PROPERTY_NAME;
+  parentNodeName;
 
   @arg(string)
-  childNodesName = NODE_CHILD_NODE_PROPERTY_NAME;
+  childNodesName;
 
   @arg(number)
   expandToDepth;
+
+  @arg(string)
+  customNodeComponent;
+
+  @arg(string)
+  defaultIcon;
 
   constructor () {
     super(...arguments);
@@ -57,6 +62,10 @@ export default class NodeComponent extends Component {
     return depth;
   }
 
+  get icon () {
+    return this.node.icon || this.defaultIcon;
+  }
+
   get computedStyle () {
     const depth = this.nodeDepth;
     const computedDepth = depth * NODE_DEPTH_LEFT_PADDING_AMOUNT
@@ -65,12 +74,15 @@ export default class NodeComponent extends Component {
   }
 
   @action
-  handleClick () {
-    set(this.node, 'isExpanded', !this.node.isExpanded);
-
+  handleRowClick () {
     if (this.onSelection) {
       this.onSelection(this.node);
     }
+  }
+
+  @action
+  handleExpand () {
+    set(this.node, 'isExpanded', !this.node.isExpanded);
   }
 
   * transition({ duration, insertedSprites, removedSprites }) {

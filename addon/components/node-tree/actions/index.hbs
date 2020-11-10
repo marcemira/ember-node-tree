@@ -1,0 +1,21 @@
+<div
+  local-class="actions"
+  ...attributes>
+  {{#if (has-block)}}
+    {{yield (hash
+      Action=(component "node-tree/actions/action"
+        nodeActions=this.nodeActions
+        execute=@nodeTreeAPI.executeAction
+        isNoneSelected=this.isNoneSelected
+      )
+    )}}
+  {{else}}
+    {{#each this.sortedNodeActions as |nodeAction|}}
+      <NodeTree::Actions::Action
+        @nodeAction={{nodeAction}}
+        @execute={{@nodeTreeAPI.executeAction}}
+        @isNoneSelected={{this.isNoneSelected}}
+      />
+    {{/each}}
+  {{/if}}
+</div>

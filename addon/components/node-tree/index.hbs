@@ -1,16 +1,24 @@
 <div
-  local-class="node-tree">
-  {{#each @nodes as |node|}}
-    {{#if (has-block)}}
-      {{yield node}}
-    {{else}}
-      <Node
-        @node={{node}}
-        @icon={{@icon}}
-        @onSelection={{this.handleSelection}}
-        @actionsAPI={{@actionsAPI}}
-        @expandToDepth={{@expandToDepth}}
-      />
-    {{/if}}
-  {{/each}}
+  style={{this.computedStyles}}
+  local-class="node-tree"
+  data-container={{to-string this.hasContainer}}>
+  {{yield
+    (hash
+      Actions=(component "node-tree/actions"
+        nodes=this.nodes
+        nodeTreeAPI=this.nodeTreeAPI
+        selectedNode=this.selectedNode
+        nodeModelName=this.nodeModelName
+        parentNodeName=this.parentNodeName
+        childNodesName=this.childNodesName
+      )
+      Tree=(component "node-tree/tree"
+        nodes=this.nodes
+        nodeTreeAPI=this.nodeTreeAPI
+        nodeModelName=this.nodeModelName
+        parentNodeName=this.parentNodeName
+        childNodesName=this.childNodesName
+      )
+    )
+  }}
 </div>

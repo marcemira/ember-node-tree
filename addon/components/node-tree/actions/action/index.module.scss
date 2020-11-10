@@ -1,0 +1,35 @@
+.action {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  margin-right: 0.25rem;
+  background-color: transparent;
+  padding: 0;
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: var(--node-tree-ui-color);
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+
+    .icon {
+      color: var(--node-tree-disabled-text-color);
+      fill: var(--node-tree-disabled-text-color);
+    }
+  }
+}
+
+.icon {
+  color: var(--node-tree-text-color);
+  fill: var(--node-tree-text-color);
+}

@@ -7,18 +7,14 @@ import { sort } from '@ember/object/computed';
 import { any, func, string, boolean, array, node, object } from 'prop-types';
 import { assert } from '@ember/debug';
 
-const NODE_MODEL_NAME = 'node';
-const NODE_PARENT_NODE_PROPERTY_NAME = 'parentNode';
-const NODE_CHILD_NODE_PROPERTY_NAME = 'childNodes';
-
-export default class NodeActionsComponent extends Component {
+export default class NodeTreeActionsComponent extends Component {
   @service store;
 
   @arg(any.isRequired)
   nodes;
 
-  @arg(func)
-  onSelection;
+  @arg(object)
+  selectedNode;
 
   @arg(func)
   onBeforeAdd;
@@ -35,22 +31,23 @@ export default class NodeActionsComponent extends Component {
   @arg(boolean)
   useEDS = true;
 
-  @arg(string)
-  nodeModelName = NODE_MODEL_NAME;
+  @arg(object.isRequired)
+  nodeTreeAPI;
 
   @arg(string)
-  parentNodeName = NODE_PARENT_NODE_PROPERTY_NAME;
+  nodeModelName;
 
   @arg(string)
-  childNodesName = NODE_CHILD_NODE_PROPERTY_NAME;
+  parentNodeName;
+
+  @arg(string)
+  childNodesName;
 
   @arg(array)
   additionalActions = [];
 
   @arg(object)
   customOrder;
-
-  @tracked selectedNode;
 
   nodeActionsSorting = ['order'];
 
@@ -104,31 +101,8 @@ export default class NodeActionsComponent extends Component {
     return nodeActions;
   }
 
-  get noneSelected () {
+  get isNoneSelected () {
     return !this.selectedNode;
-  }
-
-  get API () {
-    return {
-      onSelection: this.handleOnSelection
-    };
-  }
-
-  @action
-  handleOnSelection (node) {
-    this.selectedNode = node === this.selectedNode ? null : node;
-
-    if (this.onSelection) {
-      this.onSelection(node);
-    }
-  }
-
-  @action
-  execute (actionObject) {
-    const node = this.selectedNode;
-    const tree = this.nodes;
-
-    actionObject.action(node, tree);
   }
 
   @action
@@ -185,11 +159,11 @@ export default class NodeActionsComponent extends Component {
       }
     }
 
-    this.selectedNode = null;
+    this.nodeTreeAPI.deselectNode();
   }
 
   _removeChildNodes(parentNode) {
-    if(parentNode) {
+    if (parentNode) {
       const childNodes = parentNode[this.childNodesName] || null;
 
       if (childNodes && childNodes.length) {
