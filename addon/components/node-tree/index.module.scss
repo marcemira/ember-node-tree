@@ -1,10 +1,12 @@
 .node-tree {
   display: flex;
   flex-direction: column;
+  color: var(--node-tree-text-color);
 
   &[data-container=true] {
     margin: 0.5rem 0;
-    border: 1px solid var(--node-tree-shape-color);
+    border: 1px solid var(--node-tree-ui-color);
+    background: var(--node-tree-ui-background);
     padding-bottom: 1rem;
   }
 }

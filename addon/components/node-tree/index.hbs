@@ -1,4 +1,5 @@
 <div
+  style={{this.computedStyles}}
   local-class="node-tree"
   data-container={{to-string this.hasContainer}}>
   {{yield
@@ -6,10 +7,17 @@
       Actions=(component "node-tree/actions"
         nodes=this.nodes
         nodeTreeAPI=this.nodeTreeAPI
+        selectedNode=this.selectedNode
+        nodeModelName=this.nodeModelName
+        parentNodeName=this.parentNodeName
+        childNodesName=this.childNodesName
       )
       Tree=(component "node-tree/tree"
         nodes=this.nodes
         nodeTreeAPI=this.nodeTreeAPI
+        nodeModelName=this.nodeModelName
+        parentNodeName=this.parentNodeName
+        childNodesName=this.childNodesName
       )
     )
   }}

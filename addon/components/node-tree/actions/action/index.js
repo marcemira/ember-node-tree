@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { arg } from 'ember-arg-types';
-import { func, string, any } from 'prop-types';
+import { func, string, any, boolean } from 'prop-types';
 
 export default class NodeTreeActionsActionComponent extends Component {
   @arg(func)
@@ -11,6 +11,9 @@ export default class NodeTreeActionsActionComponent extends Component {
 
   @arg(any)
   nodeActions;
+
+  @arg(boolean)
+  isNoneSelected;
 
   get nodeAction () {
     if (this.nodeActions && this.name) {

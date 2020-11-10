@@ -6,10 +6,9 @@
 
 .row {
   display: flex;
-  height: 1.5rem;
+  height: 1.75rem;
   padding: 0.25rem 0;
   align-items: center;
-  cursor: pointer;
 
   transition: background-color 0.15s ease-in-out,
               color 0.15s ease-in-out;
@@ -40,6 +39,17 @@
     svg {
       color: var(--node-tree-hidden-text-color);
     }
+  }
+}
+
+.row-content {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+
+  &[data-has-children=false] {
+    padding-left: 1.5rem;
   }
 }
 

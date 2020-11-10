@@ -6,11 +6,6 @@ import { arg } from 'ember-arg-types';
 import { sort } from '@ember/object/computed';
 import { any, func, string, boolean, array, node, object } from 'prop-types';
 import { assert } from '@ember/debug';
-import {
-  NODE_MODEL_NAME,
-  NODE_PARENT_NODE_PROPERTY_NAME,
-  NODE_CHILD_NODE_PROPERTY_NAME
-} from 'ember-node-tree/utils/default-settings';
 
 export default class NodeTreeActionsComponent extends Component {
   @service store;
@@ -40,13 +35,13 @@ export default class NodeTreeActionsComponent extends Component {
   nodeTreeAPI;
 
   @arg(string)
-  nodeModelName = NODE_MODEL_NAME;
+  nodeModelName;
 
   @arg(string)
-  parentNodeName = NODE_PARENT_NODE_PROPERTY_NAME;
+  parentNodeName;
 
   @arg(string)
-  childNodesName = NODE_CHILD_NODE_PROPERTY_NAME;
+  childNodesName;
 
   @arg(array)
   additionalActions = [];
@@ -168,7 +163,7 @@ export default class NodeTreeActionsComponent extends Component {
   }
 
   _removeChildNodes(parentNode) {
-    if(parentNode) {
+    if (parentNode) {
       const childNodes = parentNode[this.childNodesName] || null;
 
       if (childNodes && childNodes.length) {

@@ -1,24 +1,17 @@
 <div
-  local-class="tree">
-  {{#each @nodes as |node|}}
-    {{#if (has-block)}}
-      {{yield (hash
-        Node=(component "node-tree/node"
-          nodeTreeAPI=@nodeTreeAPI
-          node=node
-          icon=@icon
-          onSelection=this.handleSelection
-          expandToDepth=@expandToDepth
-        )
-      )}}
-    {{else}}
-      <NodeTree::Node
-        @nodeTreeAPI={{@nodeTreeAPI}}
-        @node={{node}}
-        @icon={{@icon}}
-        @onSelection={{this.handleSelection}}
-        @expandToDepth={{@expandToDepth}}
-      />
-    {{/if}}
+  local-class="node-tree"
+  ...attributes>
+  {{#each this.nodes as |node|}}
+    <NodeTree::Node
+      @node={{node}}
+      @nodeTreeAPI={{@nodeTreeAPI}}
+      @defaultIcon={{this.defaultIcon}}
+      @expandToDepth={{@expandToDepth}}
+      @nodeModelName={{@nodeModelName}}
+      @parentNodeName={{@parentNodeName}}
+      @childNodesName={{@childNodesName}}
+      @onSelection={{this.handleSelection}}
+      @customNodeComponent={{@customNodeComponent}}
+    />
   {{/each}}
 </div>

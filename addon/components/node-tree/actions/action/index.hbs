@@ -1,8 +1,9 @@
 <button
   type="button"
   local-class="action"
-  title={{@nodeAction.title}}
-  disabled={{@isNoneSelected}}
-  {{on "click" (fn @execute this.nodeAction)}}>
+  title={{this.nodeAction.title}}
+  disabled={{this.isNoneSelected}}
+  {{on "click" (fn this.execute this.nodeAction)}}
+  ...attributes>
   {{svg-jar this.nodeAction.icon class=(local-class "icon")}}
 </button>

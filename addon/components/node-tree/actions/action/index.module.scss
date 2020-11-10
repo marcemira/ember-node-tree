@@ -16,14 +16,20 @@
 
   &:hover {
     cursor: pointer;
-    background-color: var(--node-tree-shape-color);
+    background-color: var(--node-tree-ui-color);
   }
 
   &[disabled] {
     opacity: 0.5;
 
     .icon {
-      color: var(--node-tree-text-color-disabled);
+      color: var(--node-tree-disabled-text-color);
+      fill: var(--node-tree-disabled-text-color);
     }
   }
+}
+
+.icon {
+  color: var(--node-tree-text-color);
+  fill: var(--node-tree-text-color);
 }

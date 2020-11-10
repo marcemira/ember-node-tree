@@ -1,24 +1,26 @@
 import Component from '@glimmer/component';
 import { set, action } from '@ember/object';
 import { arg } from 'ember-arg-types';
-import { object, string, number } from 'prop-types';
-import {
-  NODE_PARENT_NODE_PROPERTY_NAME,
-  NODE_CHILD_NODE_PROPERTY_NAME
-} from 'ember-node-tree/utils/default-settings';
+import { any, object, string, number } from 'prop-types';
 
 export default class NodeTreeComponent extends Component {
+  @arg(any.isRequired)
+  nodes;
+
   @arg(object)
   nodeTreeAPI;
 
-  @arg(string)
-  parentNodeName = NODE_PARENT_NODE_PROPERTY_NAME;
-
-  @arg(string)
-  childNodesName = NODE_CHILD_NODE_PROPERTY_NAME;
-
   @arg(number)
   expandToDepth;
+
+  @arg(string)
+  defaultIcon;
+
+  @arg(string)
+  parentNodeName;
+
+  @arg(string)
+  childNodesName;
 
   @action
   async handleSelection (node) {
