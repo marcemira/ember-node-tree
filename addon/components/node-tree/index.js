@@ -37,7 +37,8 @@ export default class NodeTreeComponent extends Component {
 
   nodeTreeAPI = {
     onSelection: this.handleOnSelection,
-    executeAction: this.executeAction
+    executeAction: this.executeAction,
+    deselectNode: this.deselectNode
   };
 
   get computedStyles () {
@@ -99,5 +100,10 @@ export default class NodeTreeComponent extends Component {
     const tree = this.nodes;
 
     actionObject.action(node, tree);
+  }
+
+  @action
+  deselectNode () {
+    this.selectedNode = null;
   }
 }

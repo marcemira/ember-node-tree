@@ -36,16 +36,7 @@ export default class NodeTreeNodeComponent extends Component {
 
   constructor () {
     super(...arguments);
-
-    if (this.expandToDepth) {
-      next(this, () => {
-        const depth = this.nodeDepth;
-
-        if (depth <= this.expandToDepth) {
-          this.node.isExpanded = true;
-        }
-      });
-    }
+    this.processExpandToDepth();
   }
 
   get nodeDepth () {
@@ -71,6 +62,22 @@ export default class NodeTreeNodeComponent extends Component {
     const computedDepth = depth * NODE_DEPTH_LEFT_PADDING_AMOUNT
 
     return htmlSafe(`padding-left: ${computedDepth}${NODE_DEPTH_LEFT_PADDING_UNIT};`);
+  }
+
+  async processExpandToDepth () {
+    if (this.expandToDepth) {
+      const depth = this.nodeDepth;
+
+      if (depth <= this.expandToDepth) {
+        if(this.node.isLoading) {
+          this.node.on('ready', () => {
+            set(this.node, 'isExpanded', true);
+          });
+        } else {
+          set(this.node, 'isExpanded', true);
+        }
+      }
+    }
   }
 
   @action
