@@ -19,12 +19,6 @@ export default class NodeTreeNodeComponent extends Component {
   @arg(func)
   onSelection;
 
-  @arg(string)
-  parentNodeName;
-
-  @arg(string)
-  childNodesName;
-
   @arg(number)
   expandToDepth;
 
@@ -32,7 +26,22 @@ export default class NodeTreeNodeComponent extends Component {
   customNodeComponent;
 
   @arg(string)
+  customRowClass;
+
+  @arg(string)
   defaultIcon;
+
+  @arg(object)
+  nodeTreeAPI;
+
+  @arg(string)
+  nodeModelName;
+
+  @arg(string)
+  parentNodeName;
+
+  @arg(string)
+  childNodesName;
 
   constructor () {
     super(...arguments);
@@ -69,7 +78,7 @@ export default class NodeTreeNodeComponent extends Component {
       const depth = this.nodeDepth;
 
       if (depth <= this.expandToDepth) {
-        if(this.node.isLoading) {
+        if(this.node.isLoading || this.node.isEmpty) {
           this.node.on('ready', () => {
             set(this.node, 'isExpanded', true);
           });

@@ -29,11 +29,11 @@ export default class NodeTreeComponent extends Component {
     const rootNode = parent ? await this._findRoot(parent) : node;
 
     if (rootNode[this.childNodesName]?.length) {
-      set(rootNode, 'isSelected', false);
+      this._nodeDeselect(node, false);
       this._childrenDeselecting(rootNode[this.childNodesName]);
     }
 
-    set(node, 'isSelected', !nodeSelectedInitialState);
+    this._nodeDeselect(node, !nodeSelectedInitialState, new Date());
 
     if (this.nodeTreeAPI) {
       this.nodeTreeAPI.onSelection(node);
@@ -52,13 +52,17 @@ export default class NodeTreeComponent extends Component {
 
   _childrenDeselecting(nodes) {
     nodes.forEach(node => {
-      if (!node.isLoading) {
-        set(node, 'isSelected', false);
-
-        if (node[this.childNodesName]?.length) {
-          this._childrenDeselecting(node[this.childNodesName]);
-        }
-      }
+      this._nodeDeselect(node, false);
     });
+  }
+
+  _nodeDeselect(node, value, date) {
+    if (!node.isLoading && !node.isEmpty) {
+      set(node, 'isSelected', value);
+
+      if (node[this.childNodesName]?.length) {
+        this._childrenDeselecting(node[this.childNodesName]);
+      }
+    }
   }
 }

@@ -1,65 +1,64 @@
-<div
-  local-class="node"
-  ...attributes>
+<div local-class="node" ...attributes>
   <div
     local-class="row"
-    class={{@customRowClass}}
+    class={{this.customRowClass}}
     style={{this.computedStyle}}
-    data-is-selected={{if @node.isSelected "true" "false"}}
-    data-is-hidden={{if @node.isHidden "true" "false"}}>
-    {{#if @node.childNodes}}
+    data-is-selected={{if this.node.isSelected "true" "false"}}
+    data-is-hidden={{if this.node.isHidden "true" "false"}}
+  >
+    {{#if this.node.childNodes}}
       <div
         role="button"
         local-class="expand"
-        data-toggle-direction={{if @node.isExpanded "down" "right"}}
+        data-toggle-direction={{if this.node.isExpanded "down" "right"}}
         {{on "click" this.handleExpand}}
       >
         <svg
           local-class="toggle-arrow"
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 320 320">
-          <path d="M41.000001 76.475H279c21.4 0 32.1 25.9 17 4l-119 119c-9.4 9.4-24.6 9.4-33.9 0l-119.099999-119c-15.1000001-15.1-4.4-41 17-41z"/>
+          viewBox="0 0 320 320"
+        >
+          <path
+            d="M41.000001 76.475H279c21.4 0 32.1 25.9 17 4l-119 119c-9.4 9.4-24.6 9.4-33.9 0l-119.099999-119c-15.1000001-15.1-4.4-41 17-41z"
+          ></path>
         </svg>
       </div>
     {{/if}}
     <div
       role="button"
       local-class="row-content"
-      data-has-children={{if @node.childNodes "true" "false"}}
-      {{on "click" this.handleRowClick}}>
+      data-has-children={{if this.node.childNodes "true" "false"}}
+      {{on "click" this.handleRowClick}}
+    >
       {{#if this.customNodeComponent}}
-        {{component this.customNodeComponent
-          icon=this.icon
-          node=@node
-        }}
+        {{component this.customNodeComponent icon=this.icon node=@node}}
       {{else}}
         {{#if this.icon}}
           {{svg-jar this.icon class=(local-class "icon")}}
         {{/if}}
         <div local-class="name">
-          {{@node.name}}
+          {{this.node.name}}
         </div>
       {{/if}}
     </div>
   </div>
-
   <AnimatedContainer>
     {{#animated-if
-      (and @node.childNodes.length @node.isExpanded)
+      (and this.node.childNodes.length this.node.isExpanded)
       use=this.transition
       duration=150
     }}
       <NodeTree::Tree
-        @icon={{@icon}}
-        @nodes={{@node.childNodes}}
-        @nodeTreeAPI={{@nodeTreeAPI}}
-        @defaultIcon={{@defaultIcon}}
-        @onSelection={{@onSelection}}
-        @expandToDepth={{@expandToDepth}}
-        @nodeModelName={{@nodeModelName}}
-        @parentNodeName={{@parentNodeName}}
-        @childNodesName={{@childNodesName}}
-        @customNodeComponent={{@customNodeComponent}}
+        @icon={{this.icon}}
+        @nodes={{this.node.childNodes}}
+        @nodeTreeAPI={{this.nodeTreeAPI}}
+        @defaultIcon={{this.defaultIcon}}
+        @onSelection={{this.onSelection}}
+        @expandToDepth={{this.expandToDepth}}
+        @nodeModelName={{this.nodeModelName}}
+        @parentNodeName={{this.parentNodeName}}
+        @childNodesName={{this.childNodesName}}
+        @customNodeComponent={{this.customNodeComponent}}
       />
     {{/animated-if}}
   </AnimatedContainer>
