@@ -8,6 +8,7 @@ import { htmlSafe } from '@ember/string';
 import { object, string, func, number } from 'prop-types';
 import { next } from '@ember/runloop';
 import {
+  NODE_DEPTH_LEFT_PADDING_BASE,
   NODE_DEPTH_LEFT_PADDING_AMOUNT,
   NODE_DEPTH_LEFT_PADDING_UNIT
 } from 'ember-node-tree/utils/default-settings';
@@ -67,10 +68,16 @@ export default class NodeTreeNodeComponent extends Component {
   }
 
   get computedStyle () {
-    const depth = this.nodeDepth;
-    const computedDepth = depth * NODE_DEPTH_LEFT_PADDING_AMOUNT
+    const depth = this.nodeDepth -1;
+    const hasDepth = depth > 0;
 
-    return htmlSafe(`padding-left: ${computedDepth}${NODE_DEPTH_LEFT_PADDING_UNIT};`);
+    let paddingAmount = NODE_DEPTH_LEFT_PADDING_BASE;
+
+    if (hasDepth) {
+      paddingAmount = depth * (paddingAmount + NODE_DEPTH_LEFT_PADDING_AMOUNT);
+    }
+
+    return htmlSafe(`padding-left: ${paddingAmount}${NODE_DEPTH_LEFT_PADDING_UNIT};`);
   }
 
   async processExpandToDepth () {
