@@ -49,6 +49,9 @@ export default class NodeTreeActionsComponent extends Component {
   @arg(object)
   customOrder;
 
+  @arg(boolean)
+  hasCustomPlacement = false;
+
   nodeActionsSorting = ['order'];
 
   baseActions = [
@@ -125,7 +128,10 @@ export default class NodeTreeActionsComponent extends Component {
       }
     }
 
-    parentNode[this.childNodesName].pushObject(newNode);
+    if (!this.hasCustomPlacement) {
+      parentNode[this.childNodesName].pushObject(newNode);
+    }
+
     parentNode.isExpanded = true;
 
     if (this.onAdd) {
