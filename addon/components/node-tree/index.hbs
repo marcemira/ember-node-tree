@@ -1,7 +1,9 @@
 <div
   style={{this.computedStyles}}
   local-class="node-tree"
-  data-container={{to-string this.hasContainer}}>
+  data-container={{to-string this.hasContainer}}
+  ...attributes
+>
   {{yield
     (hash
       Actions=(component "node-tree/actions"
