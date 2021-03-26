@@ -1,7 +1,8 @@
 import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 import { set, action } from '@ember/object';
 import { arg } from 'ember-arg-types';
-import { any, object, string, number } from 'prop-types';
+import { any, object, string, number, func } from 'prop-types';
 
 export default class NodeTreeComponent extends Component {
   @arg(any.isRequired)
@@ -21,6 +22,19 @@ export default class NodeTreeComponent extends Component {
 
   @arg(string)
   childNodesName;
+
+  @arg(func)
+  filterNodesFn;
+
+  @tracked filteredNodes;
+
+  constructor () {
+    super(...arguments);
+
+    this.filteredNodes = this.filterNodesFn
+      ? this.filterNodesFn(this.nodes)
+      : this.nodes;
+  }
 
   @action
   async handleSelection (node) {

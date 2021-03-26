@@ -6,7 +6,7 @@
     data-is-selected={{if this.node.isSelected "true" "false"}}
     data-is-hidden={{if this.node.isHidden "true" "false"}}
   >
-    {{#if this.node.childNodes}}
+    {{#if this.shouldDisplayChildNodes}}
       <div
         role="button"
         local-class="expand"
@@ -27,7 +27,7 @@
     <div
       role="button"
       local-class="row-content"
-      data-has-children={{if this.node.childNodes "true" "false"}}
+      data-has-children={{if this.shouldDisplayChildNodes "true" "false"}}
       {{on "click" this.handleRowClick}}
     >
       {{#if this.customNodeComponent}}
@@ -44,7 +44,7 @@
   </div>
   <AnimatedContainer>
     {{#animated-if
-      (and this.node.childNodes.length this.node.isExpanded)
+      (and this.shouldDisplayChildNodes this.node.isExpanded)
       use=this.transition
       duration=150
     }}
@@ -59,6 +59,7 @@
         @parentNodeName={{this.parentNodeName}}
         @childNodesName={{this.childNodesName}}
         @customNodeComponent={{this.customNodeComponent}}
+        @filterNodesFn={{@filterNodesFn}}
       />
     {{/animated-if}}
   </AnimatedContainer>

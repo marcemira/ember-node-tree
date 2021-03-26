@@ -44,6 +44,9 @@ export default class NodeTreeNodeComponent extends Component {
   @arg(string)
   childNodesName;
 
+  @arg(func)
+  filterNodesFn;
+
   constructor () {
     super(...arguments);
     this.processExpandToDepth();
@@ -78,6 +81,17 @@ export default class NodeTreeNodeComponent extends Component {
     }
 
     return htmlSafe(`padding-left: ${paddingAmount}${NODE_DEPTH_LEFT_PADDING_UNIT};`);
+  }
+
+  get shouldDisplayChildNodes () {
+    if (this.filterNodesFn) {
+      const filteredChildNodes = this.filterNodesFn(this.node.childNodes);
+      const existentNodesAfterFilter = filteredChildNodes.length > 0 ? true : false;
+
+      return existentNodesAfterFilter;
+    }
+
+    return this.node.childNodes.length && this.node.isExpanded;
   }
 
   async processExpandToDepth () {
