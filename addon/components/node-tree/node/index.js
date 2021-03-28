@@ -1,8 +1,6 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { get, set, action } from '@ember/object';
-import { fadeIn, fadeOut } from 'ember-animated/motions/opacity';
-import move from 'ember-animated/motions/move';
 import { arg } from 'ember-arg-types';
 import { htmlSafe } from '@ember/string';
 import { object, string, func, number } from 'prop-types';
@@ -12,6 +10,7 @@ import {
   NODE_DEPTH_LEFT_PADDING_AMOUNT,
   NODE_DEPTH_LEFT_PADDING_UNIT
 } from 'ember-node-tree/utils/default-settings';
+import verticalSlide from 'ember-node-tree/transitions/vertical-slide';
 
 export default class NodeTreeNodeComponent extends Component {
   @arg(object.isRequired)
@@ -47,6 +46,7 @@ export default class NodeTreeNodeComponent extends Component {
   @arg(func)
   filterNodesFn;
 
+  transition = verticalSlide
   constructor () {
     super(...arguments);
     this.processExpandToDepth();
@@ -122,17 +122,7 @@ export default class NodeTreeNodeComponent extends Component {
     set(this.node, 'isExpanded', !this.node.isExpanded);
   }
 
-  * transition({ duration, insertedSprites, removedSprites }) {
-    for (let sprite of removedSprites) {
-      sprite.endTranslatedBy(0, -12);
-      move(sprite);
-      fadeOut(sprite);
-    }
 
-    for (let sprite of insertedSprites) {
-      sprite.startTranslatedBy(0, -12);
-      move(sprite);
-      fadeIn(sprite);
     }
   }
 }
