@@ -5,6 +5,8 @@ import { arg } from 'ember-arg-types';
 import { htmlSafe } from '@ember/string';
 import { object, string, func, number } from 'prop-types';
 import { next } from '@ember/runloop';
+import { waitForEvent } from 'ember-concurrency';
+import { task } from 'ember-concurrency-decorators';
 import {
   NODE_DEPTH_LEFT_PADDING_BASE,
   NODE_DEPTH_LEFT_PADDING_AMOUNT,
@@ -46,10 +48,13 @@ export default class NodeTreeNodeComponent extends Component {
   @arg(func)
   filterNodesFn;
 
+  @tracked shouldLoadChild = false
+
   transition = verticalSlide
+
   constructor () {
     super(...arguments);
-    this.processExpandToDepth();
+    this.processExpandToDepth.perform();
   }
 
   get nodeDepth () {
@@ -94,17 +99,17 @@ export default class NodeTreeNodeComponent extends Component {
     return this.node.childNodes.length && this.node.isExpanded;
   }
 
-  async processExpandToDepth () {
+  @task
+  * processExpandToDepth () {
     if (this.expandToDepth) {
       const depth = this.nodeDepth;
 
       if (depth <= this.expandToDepth) {
         if(this.node.isLoading || this.node.isEmpty) {
-          this.node.on('ready', () => {
-            set(this.node, 'isExpanded', true);
-          });
+          yield waitForEvent(this.node, 'ready')
+          this.handleExpand()
         } else {
-          set(this.node, 'isExpanded', true);
+          this.handleExpand()
         }
       }
     }
@@ -119,10 +124,12 @@ export default class NodeTreeNodeComponent extends Component {
 
   @action
   handleExpand () {
-    set(this.node, 'isExpanded', !this.node.isExpanded);
-  }
+    const node = this.node
 
+    set(node, 'isExpanded', !node.isExpanded);
 
+    if (node.isExpanded === true) {
+      this.shouldLoadChild = true
     }
   }
 }

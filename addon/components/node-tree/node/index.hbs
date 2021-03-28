@@ -44,7 +44,11 @@
   </div>
   <AnimatedContainer>
     {{#animated-if
-      (and this.shouldDisplayChildNodes this.node.isExpanded)
+      (and
+        this.shouldLoadChild
+        this.shouldDisplayChildNodes
+        this.node.isExpanded
+      )
       use=this.transition
       duration=150
     }}
