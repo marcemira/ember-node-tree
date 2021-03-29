@@ -1,17 +1,18 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { get, set, action } from '@ember/object';
-import { fadeIn, fadeOut } from 'ember-animated/motions/opacity';
-import move from 'ember-animated/motions/move';
 import { arg } from 'ember-arg-types';
 import { htmlSafe } from '@ember/string';
 import { object, string, func, number } from 'prop-types';
 import { next } from '@ember/runloop';
+import { waitForEvent } from 'ember-concurrency';
+import { task } from 'ember-concurrency-decorators';
 import {
   NODE_DEPTH_LEFT_PADDING_BASE,
   NODE_DEPTH_LEFT_PADDING_AMOUNT,
   NODE_DEPTH_LEFT_PADDING_UNIT
 } from 'ember-node-tree/utils/default-settings';
+import verticalSlide from 'ember-node-tree/transitions/vertical-slide';
 
 export default class NodeTreeNodeComponent extends Component {
   @arg(object.isRequired)
@@ -44,9 +45,16 @@ export default class NodeTreeNodeComponent extends Component {
   @arg(string)
   childNodesName;
 
+  @arg(func)
+  filterNodesFn;
+
+  @tracked shouldLoadChild = false
+
+  transition = verticalSlide
+
   constructor () {
     super(...arguments);
-    this.processExpandToDepth();
+    this.processExpandToDepth.perform();
   }
 
   get nodeDepth () {
@@ -80,17 +88,28 @@ export default class NodeTreeNodeComponent extends Component {
     return htmlSafe(`padding-left: ${paddingAmount}${NODE_DEPTH_LEFT_PADDING_UNIT};`);
   }
 
-  async processExpandToDepth () {
+  get shouldDisplayChildNodes () {
+    if (this.filterNodesFn) {
+      const filteredChildNodes = this.filterNodesFn(this.node.childNodes);
+      const existentNodesAfterFilter = filteredChildNodes.length > 0 ? true : false;
+
+      return existentNodesAfterFilter;
+    }
+
+    return this.node.childNodes.length && this.node.isExpanded;
+  }
+
+  @task
+  * processExpandToDepth () {
     if (this.expandToDepth) {
       const depth = this.nodeDepth;
 
       if (depth <= this.expandToDepth) {
         if(this.node.isLoading || this.node.isEmpty) {
-          this.node.on('ready', () => {
-            set(this.node, 'isExpanded', true);
-          });
+          yield waitForEvent(this.node, 'ready')
+          this.handleExpand()
         } else {
-          set(this.node, 'isExpanded', true);
+          this.handleExpand()
         }
       }
     }
@@ -105,20 +124,12 @@ export default class NodeTreeNodeComponent extends Component {
 
   @action
   handleExpand () {
-    set(this.node, 'isExpanded', !this.node.isExpanded);
-  }
+    const node = this.node
 
-  * transition({ duration, insertedSprites, removedSprites }) {
-    for (let sprite of removedSprites) {
-      sprite.endTranslatedBy(0, -12);
-      move(sprite);
-      fadeOut(sprite);
-    }
+    set(node, 'isExpanded', !node.isExpanded);
 
-    for (let sprite of insertedSprites) {
-      sprite.startTranslatedBy(0, -12);
-      move(sprite);
-      fadeIn(sprite);
+    if (node.isExpanded === true) {
+      this.shouldLoadChild = true
     }
   }
 }

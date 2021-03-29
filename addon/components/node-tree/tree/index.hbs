@@ -1,7 +1,7 @@
 <div
   local-class="node-tree"
   ...attributes>
-  {{#each this.nodes as |node|}}
+  {{#each this.filteredNodes as |node|}}
     <NodeTree::Node
       @node={{node}}
       @nodeTreeAPI={{@nodeTreeAPI}}
@@ -13,6 +13,7 @@
       @onSelection={{this.handleSelection}}
       @customNodeComponent={{@customNodeComponent}}
       @customRowClass={{@customRowClass}}
+      @filterNodesFn={{@filterNodesFn}}
     />
   {{/each}}
 </div>
