@@ -1,19 +1,26 @@
 <div
   local-class="node-tree"
   ...attributes>
-  {{#each this.filteredNodes as |node|}}
-    <NodeTree::Node
-      @node={{node}}
-      @nodeTreeAPI={{@nodeTreeAPI}}
-      @defaultIcon={{this.defaultIcon}}
-      @expandToDepth={{@expandToDepth}}
-      @nodeModelName={{@nodeModelName}}
-      @parentNodeName={{@parentNodeName}}
-      @childNodesName={{@childNodesName}}
-      @onSelection={{this.handleSelection}}
-      @customNodeComponent={{@customNodeComponent}}
-      @customRowClass={{@customRowClass}}
-      @filterNodesFn={{@filterNodesFn}}
-    />
-  {{/each}}
+  <AnimatedContainer>
+    {{#animated-each
+      this.filteredNodes
+      use=this.transition
+      duration=150
+      as |node|
+    }}
+      <NodeTree::Node
+        @node={{node}}
+        @nodeTreeAPI={{@nodeTreeAPI}}
+        @defaultIcon={{this.defaultIcon}}
+        @expandToDepth={{@expandToDepth}}
+        @nodeModelName={{@nodeModelName}}
+        @parentNodeName={{@parentNodeName}}
+        @childNodesName={{@childNodesName}}
+        @onSelection={{this.handleSelection}}
+        @customNodeComponent={{@customNodeComponent}}
+        @customRowClass={{@customRowClass}}
+        @filterNodesFn={{@filterNodesFn}}
+      />
+    {{/animated-each}}
+  </AnimatedContainer>
 </div>

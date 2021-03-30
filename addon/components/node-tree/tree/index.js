@@ -1,9 +1,9 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { set, action } from '@ember/object';
 import { set, action, computed, defineProperty } from '@ember/object';
 import { arg } from 'ember-arg-types';
 import { any, object, string, number, func } from 'prop-types';
+import verticalSlide from 'ember-node-tree/transitions/vertical-slide';
 
 export default class NodeTreeComponent extends Component {
   @arg(any.isRequired)
@@ -27,7 +27,7 @@ export default class NodeTreeComponent extends Component {
   @arg(func)
   filterNodesFn;
 
-  @tracked filteredNodes;
+  transition = verticalSlide
 
   constructor () {
     super(...arguments)
