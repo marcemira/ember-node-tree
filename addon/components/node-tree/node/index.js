@@ -90,7 +90,7 @@ export default class NodeTreeNodeComponent extends Component {
 
   get shouldDisplayChildNodes () {
     if (this.filterNodesFn) {
-      const filteredChildNodes = this.filterNodesFn(this.node.childNodes);
+      const filteredChildNodes = this.filterNodesFn(this.node[this.childNodesName]);
       const existentNodesAfterFilter = filteredChildNodes.length > 0 ? true : false;
 
       return existentNodesAfterFilter;

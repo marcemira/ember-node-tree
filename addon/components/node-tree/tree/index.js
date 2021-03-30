@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { set, action } from '@ember/object';
+import { set, action, computed, defineProperty } from '@ember/object';
 import { arg } from 'ember-arg-types';
 import { any, object, string, number, func } from 'prop-types';
 
@@ -29,11 +30,21 @@ export default class NodeTreeComponent extends Component {
   @tracked filteredNodes;
 
   constructor () {
-    super(...arguments);
+    super(...arguments)
 
-    this.filteredNodes = this.filterNodesFn
-      ? this.filterNodesFn(this.nodes)
-      : this.nodes;
+    defineProperty(this, 'filteredNodes',
+      computed(
+        'nodes',
+        'filteredNodesFn',
+        `nodes.${this.parentNodeName}`,
+        `nodes.@each.${this.childNodesName}`,
+        () => {
+          return this.filterNodesFn
+          ? this.filterNodesFn(this.nodes)
+          : this.nodes;
+        }
+      )
+    );
   }
 
   @action
