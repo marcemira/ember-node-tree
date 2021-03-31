@@ -23,10 +23,11 @@ export default class NodeTreeNodeNameComponent extends Component {
 
     const elementWidth = element.clientWidth;
     const nameWidth = this.nameElement.clientWidth
+    const nameLength = this.name?.length || 0
 
     this.shouldScroll = elementWidth < nameWidth;
     this.scrollAmount = (nameWidth - elementWidth + RIGHT_SCROLL_PADDING) * -1;
-    this.scrollDuration = this.name.length * WORD_SCROLL_DURATION;
+    this.scrollDuration = nameLength * WORD_SCROLL_DURATION;
   }
 
   @action
