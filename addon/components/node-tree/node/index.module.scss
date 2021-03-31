@@ -48,13 +48,10 @@
   align-items: center;
   cursor: pointer;
   overflow: hidden;
+  width: 100%;
 
   &[data-has-children=false] {
-    padding-left: 1.25rem;
-  }
-
-  &[data-has-children=true] {
-    width: calc(100% - 2rem);
+    padding-left: 1.75rem;
   }
 }
 
@@ -85,10 +82,4 @@
   height: 1rem;
   margin: 0 0.25rem;
   flex-shrink: 0;
-}
-
-.name {
-  height: 1.5rem;
-  line-height: 1.5;
-  color: var(--node-tree-text-color);
 }

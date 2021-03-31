@@ -1,0 +1,15 @@
+.name {
+  display: block;
+  height: 1.5rem;
+  color: var(--node-tree-text-color);
+  line-height: 1.5;
+  overflow: hidden;
+  width: 100%;
+}
+
+.scrolling {
+  display: block;
+  height: 100%;
+  width: max-content;
+  transition-timing-function: linear;
+}
