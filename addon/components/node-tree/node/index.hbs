@@ -36,9 +36,7 @@
         {{#if this.icon}}
           {{svg-jar this.icon class=(local-class "icon")}}
         {{/if}}
-        <div local-class="name">
-          {{this.node.name}}
-        </div>
+        <NodeTree::Node::Name @name={{this.node.name}} />
       {{/if}}
     </div>
   </div>
