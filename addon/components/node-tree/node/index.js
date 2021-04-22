@@ -76,7 +76,7 @@ export default class NodeTreeNodeComponent extends Component {
   }
 
   get computedStyle () {
-    const depth = this.nodeDepth -1;
+    const depth = this.nodeDepth;
     const hasDepth = depth > 0;
 
     let paddingAmount = NODE_DEPTH_LEFT_PADDING_BASE;
