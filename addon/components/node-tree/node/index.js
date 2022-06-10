@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { get, set, action } from '@ember/object';
 import { arg } from 'ember-arg-types';
-import { htmlSafe } from '@ember/string';
+import { htmlSafe } from '@ember/template';
 import { object, string, func, number } from 'prop-types';
 import { next } from '@ember/runloop';
 import { waitForEvent } from 'ember-concurrency';
