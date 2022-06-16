@@ -4,13 +4,12 @@ import { get, set, action } from '@ember/object';
 import { arg } from 'ember-arg-types';
 import { htmlSafe } from '@ember/template';
 import { object, string, func, number } from 'prop-types';
-import { next } from '@ember/runloop';
 import { waitForEvent } from 'ember-concurrency';
 import { task } from 'ember-concurrency-decorators';
 import {
   NODE_DEPTH_LEFT_PADDING_BASE,
   NODE_DEPTH_LEFT_PADDING_AMOUNT,
-  NODE_DEPTH_LEFT_PADDING_UNIT
+  NODE_DEPTH_LEFT_PADDING_UNIT,
 } from 'ember-node-tree/utils/default-settings';
 import verticalSlide from 'ember-node-tree/transitions/vertical-slide';
 
@@ -48,34 +47,34 @@ export default class NodeTreeNodeComponent extends Component {
   @arg(func)
   filterNodesFn;
 
-  @tracked shouldLoadChild = false
+  @tracked shouldLoadChild = false;
 
-  transition = verticalSlide
+  transition = verticalSlide;
 
-  constructor () {
+  constructor() {
     super(...arguments);
     this.processExpandToDepth.perform();
   }
 
-  get nodeDepth () {
+  get nodeDepth() {
     let parent = get(this.node, this.parentNodeName);
     let depth = 0;
 
     if (parent) {
       while (get(parent, this.parentNodeName)) {
         parent = get(parent, this.parentNodeName);
-        depth ++;
+        depth++;
       }
     }
 
     return depth;
   }
 
-  get icon () {
+  get icon() {
     return this.node.icon || this.defaultIcon;
   }
 
-  get computedStyle () {
+  get computedStyle() {
     const depth = this.nodeDepth;
     const hasDepth = depth > 0;
 
@@ -85,13 +84,18 @@ export default class NodeTreeNodeComponent extends Component {
       paddingAmount = depth * (paddingAmount + NODE_DEPTH_LEFT_PADDING_AMOUNT);
     }
 
-    return htmlSafe(`padding-left: ${paddingAmount}${NODE_DEPTH_LEFT_PADDING_UNIT};`);
+    return htmlSafe(
+      `padding-left: ${paddingAmount}${NODE_DEPTH_LEFT_PADDING_UNIT};`
+    );
   }
 
-  get shouldDisplayChildNodes () {
+  get shouldDisplayChildNodes() {
     if (this.filterNodesFn) {
-      const filteredChildNodes = this.filterNodesFn(this.node[this.childNodesName]);
-      const existentNodesAfterFilter = filteredChildNodes.length > 0 ? true : false;
+      const filteredChildNodes = this.filterNodesFn(
+        this.node[this.childNodesName]
+      );
+      const existentNodesAfterFilter =
+        filteredChildNodes.length > 0 ? true : false;
 
       return existentNodesAfterFilter;
     }
@@ -100,36 +104,36 @@ export default class NodeTreeNodeComponent extends Component {
   }
 
   @task
-  * processExpandToDepth () {
+  *processExpandToDepth() {
     if (this.expandToDepth) {
       const depth = this.nodeDepth;
 
       if (depth <= this.expandToDepth) {
-        if(this.node.isLoading || this.node.isEmpty) {
-          yield waitForEvent(this.node, 'ready')
-          this.handleExpand()
+        if (this.node.isLoading || this.node.isEmpty) {
+          yield waitForEvent(this.node, 'ready');
+          this.handleExpand();
         } else {
-          this.handleExpand()
+          this.handleExpand();
         }
       }
     }
   }
 
   @action
-  handleRowClick () {
+  handleRowClick() {
     if (this.onSelection) {
       this.onSelection(this.node);
     }
   }
 
   @action
-  handleExpand () {
-    const node = this.node
+  handleExpand() {
+    const node = this.node;
 
     set(node, 'isExpanded', !node.isExpanded);
 
     if (node.isExpanded === true) {
-      this.shouldLoadChild = true
+      this.shouldLoadChild = true;
     }
   }
 }

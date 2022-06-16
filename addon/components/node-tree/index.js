@@ -38,55 +38,76 @@ export default class NodeTreeComponent extends Component {
   nodeTreeAPI = {
     onSelection: this.handleOnSelection,
     executeAction: this.executeAction,
-    deselectNode: this.deselectNode
+    deselectNode: this.deselectNode,
   };
 
-  get computedStyles () {
+  get computedStyles() {
     if (this.theme) {
       const appliedVariables = [];
 
       if (this.theme.primaryColor) {
-        appliedVariables.push({ [THEME_VARIABLES['primaryColor']]: this.theme.primaryColor });
+        appliedVariables.push({
+          [THEME_VARIABLES['primaryColor']]: this.theme.primaryColor,
+        });
       }
       if (this.theme.textColor) {
-        appliedVariables.push({ [THEME_VARIABLES['textColor']]: this.theme.textColor });
+        appliedVariables.push({
+          [THEME_VARIABLES['textColor']]: this.theme.textColor,
+        });
       }
       if (this.theme.uiColor) {
-        appliedVariables.push({ [THEME_VARIABLES['uiColor']]: this.theme.uiColor });
+        appliedVariables.push({
+          [THEME_VARIABLES['uiColor']]: this.theme.uiColor,
+        });
       }
       if (this.theme.uiBackground) {
-        appliedVariables.push({ [THEME_VARIABLES['uiBackground']]: this.theme.uiBackground });
+        appliedVariables.push({
+          [THEME_VARIABLES['uiBackground']]: this.theme.uiBackground,
+        });
       }
       if (this.theme.disabledTextColor) {
-        appliedVariables.push({ [THEME_VARIABLES['disabledTextColor']]: this.theme.disabledTextColor });
+        appliedVariables.push({
+          [THEME_VARIABLES['disabledTextColor']]: this.theme.disabledTextColor,
+        });
       }
       if (this.theme.selectedBackground) {
-        appliedVariables.push({ [THEME_VARIABLES['selectedBackground']]: this.theme.selectedBackground });
+        appliedVariables.push({
+          [THEME_VARIABLES['selectedBackground']]:
+            this.theme.selectedBackground,
+        });
       }
       if (this.theme.selectedTextColor) {
-        appliedVariables.push({ [THEME_VARIABLES['selectedTextColor']]: this.theme.selectedTextColor });
+        appliedVariables.push({
+          [THEME_VARIABLES['selectedTextColor']]: this.theme.selectedTextColor,
+        });
       }
       if (this.theme.hiddenBackground) {
-        appliedVariables.push({ [THEME_VARIABLES['hiddenBackground']]: this.theme.hiddenBackground });
+        appliedVariables.push({
+          [THEME_VARIABLES['hiddenBackground']]: this.theme.hiddenBackground,
+        });
       }
       if (this.theme.hiddenTextColor) {
-        appliedVariables.push({ [THEME_VARIABLES['hiddenTextColor']]: this.theme.hiddenTextColor });
+        appliedVariables.push({
+          [THEME_VARIABLES['hiddenTextColor']]: this.theme.hiddenTextColor,
+        });
       }
 
-      return htmlSafe(appliedVariables.reduce((styles, themeVariable) => {
-        const prop = Object.keys(themeVariable)[0];
-        const value = themeVariable[prop];
+      return htmlSafe(
+        appliedVariables.reduce((styles, themeVariable) => {
+          const prop = Object.keys(themeVariable)[0];
+          const value = themeVariable[prop];
 
-        return `${styles}
+          return `${styles}
         ${prop}: ${value};`;
-      }, ''));
+        }, '')
+      );
     }
 
-    return;
+    return undefined;
   }
 
   @action
-  handleOnSelection (node) {
+  handleOnSelection(node) {
     this.selectedNode = node === this.selectedNode ? null : node;
 
     if (this.onSelection) {
@@ -95,7 +116,7 @@ export default class NodeTreeComponent extends Component {
   }
 
   @action
-  executeAction (actionObject) {
+  executeAction(actionObject) {
     const node = this.selectedNode;
     const tree = this.nodes;
 
@@ -103,7 +124,7 @@ export default class NodeTreeComponent extends Component {
   }
 
   @action
-  deselectNode () {
+  deselectNode() {
     this.selectedNode = null;
   }
 }

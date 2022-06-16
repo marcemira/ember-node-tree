@@ -1,10 +1,10 @@
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action, set } from '@ember/object';
 import { arg } from 'ember-arg-types';
+// eslint-disable-next-line ember/no-computed-properties-in-native-classes
 import { sort } from '@ember/object/computed';
-import { any, func, string, boolean, array, node, object } from 'prop-types';
+import { any, func, string, boolean, array, object } from 'prop-types';
 import { assert } from '@ember/debug';
 
 export default class NodeTreeActionsComponent extends Component {
@@ -73,7 +73,7 @@ export default class NodeTreeActionsComponent extends Component {
 
   @sort('nodeActions', 'nodeActionsSorting') sortedNodeActions;
 
-  constructor () {
+  constructor() {
     super(...arguments);
 
     if (this.additionalActions) {
@@ -85,16 +85,13 @@ export default class NodeTreeActionsComponent extends Component {
     }
   }
 
-  get nodeActions () {
-    let nodeActions = [
-      ...this.baseActions,
-      ...this.additionalActions
-    ];
+  get nodeActions() {
+    let nodeActions = [...this.baseActions, ...this.additionalActions];
 
     if (this.customOrder) {
       for (const actionName in this.customOrder) {
-        const action = nodeActions.find(nodeAction =>
-          nodeAction.name === actionName
+        const action = nodeActions.find(
+          (nodeAction) => nodeAction.name === actionName
         );
 
         set(action, 'order', this.customOrder[actionName]);
@@ -104,12 +101,12 @@ export default class NodeTreeActionsComponent extends Component {
     return nodeActions;
   }
 
-  get isNoneSelected () {
+  get isNoneSelected() {
     return !this.selectedNode;
   }
 
   @action
-  async addNode (parentNode) {
+  async addNode(parentNode) {
     let newNode;
 
     if (this.onBeforeAdd) {
@@ -120,7 +117,7 @@ export default class NodeTreeActionsComponent extends Component {
       }
     } else {
       newNode = {
-        name: 'newNode'
+        name: 'newNode',
       };
 
       if (this.useEDS) {
@@ -140,7 +137,7 @@ export default class NodeTreeActionsComponent extends Component {
   }
 
   @action
-  async removeNode (node, tree) {
+  async removeNode(node) {
     if (this.onBeforeRemove) {
       const shouldContinue = await this.onBeforeRemove(node);
 
@@ -173,7 +170,7 @@ export default class NodeTreeActionsComponent extends Component {
       const childNodes = parentNode[this.childNodesName] || null;
 
       if (childNodes && childNodes.length) {
-        childNodes.forEach(node => {
+        childNodes.forEach((node) => {
           this._removeChildNodes(node);
 
           if (this.onRemove) {
@@ -193,7 +190,10 @@ export default class NodeTreeActionsComponent extends Component {
         assert('Action must have an icon', typeof action.icon === 'string');
         assert('Action must have a title', typeof action.title === 'string');
         assert('Action must have a order', typeof action.order === 'number');
-        assert('Action must have a function', typeof action.action === 'function');
+        assert(
+          'Action must have a function',
+          typeof action.action === 'function'
+        );
       } catch (failedAssertion) {
         console.error(action, failedAssertion);
       }
@@ -204,7 +204,10 @@ export default class NodeTreeActionsComponent extends Component {
     try {
       for (const nodeAction of nodeActions) {
         for (const order in this.customOrder) {
-          assert(`Must define an order for \`${nodeAction.name}\` action, on customOrder object argument`, this.customOrder.hasOwnProperty(nodeAction.name));
+          assert(
+            `Must define an order ${order} for \`${nodeAction.name}\` action, on customOrder object argument`,
+            Object.keys(this.customOrder).includes(nodeAction.name)
+          );
         }
       }
     } catch (failedAssertion) {
