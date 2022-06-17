@@ -1,4 +1,4 @@
 module.exports = {
   componentStructure: 'nested',
-  disableAnalytics: false
-}
+  disableAnalytics: false,
+};

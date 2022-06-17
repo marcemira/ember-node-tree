@@ -15,9 +15,11 @@ export default class NodeTreeActionsActionComponent extends Component {
   @arg(boolean)
   isNoneSelected;
 
-  get nodeAction () {
+  get nodeAction() {
     if (this.nodeActions && this.name) {
-      const foundNodeAction = this.nodeActions.find(action => action.name === this.name);
+      const foundNodeAction = this.nodeActions.find(
+        (action) => action.name === this.name
+      );
 
       if (foundNodeAction) {
         return foundNodeAction;
