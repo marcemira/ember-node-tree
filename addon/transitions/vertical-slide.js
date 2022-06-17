@@ -1,7 +1,7 @@
 import { fadeIn, fadeOut } from 'ember-animated/motions/opacity';
 import move from 'ember-animated/motions/move';
 
-export default function * transition ({ duration, insertedSprites, removedSprites }) {
+export default function transition({ insertedSprites, removedSprites }) {
   for (const sprite of removedSprites) {
     sprite.endTranslatedBy(0, -12);
     move(sprite);

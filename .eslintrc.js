@@ -24,6 +24,7 @@ module.exports = {
     // node files
     {
       files: [
+        './.ember-cli.js',
         './.eslintrc.js',
         './.prettierrc.js',
         './.template-lintrc.js',
@@ -48,6 +49,9 @@ module.exports = {
       // test files
       files: ['tests/**/*-test.{js,ts}'],
       extends: ['plugin:qunit/recommended'],
+      rules: {
+        'qunit/no-assert-equal': 'warn',
+      },
     },
   ],
 };

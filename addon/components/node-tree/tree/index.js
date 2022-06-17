@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
+// eslint-disable-next-line ember/no-computed-properties-in-native-classes
 import { set, action, computed, defineProperty } from '@ember/object';
 import { arg } from 'ember-arg-types';
 import { any, object, string, number, func } from 'prop-types';
@@ -27,28 +27,32 @@ export default class NodeTreeComponent extends Component {
   @arg(func)
   filterNodesFn;
 
-  transition = verticalSlide
+  transition = verticalSlide;
 
-  constructor () {
-    super(...arguments)
+  constructor() {
+    super(...arguments);
 
-    defineProperty(this, 'filteredNodes',
+    defineProperty(
+      this,
+      'filteredNodes',
       computed(
-        'nodes',
-        'filteredNodesFn',
         `nodes.${this.parentNodeName}`,
         `nodes.@each.${this.childNodesName}`,
+        'filterNodesFn',
+        'filteredNodesFn',
+        'nodes',
+        // eslint-disable-next-line ember/no-arrow-function-computed-properties
         () => {
           return this.filterNodesFn
-          ? this.filterNodesFn(this.nodes)
-          : this.nodes;
+            ? this.filterNodesFn(this.nodes)
+            : this.nodes;
         }
       )
     );
   }
 
   @action
-  async handleSelection (node) {
+  async handleSelection(node) {
     const parent = await node[this.parentNodeName];
     const nodeSelectedInitialState = node.isSelected;
     const rootNode = parent ? await this._findRoot(parent) : node;
@@ -76,12 +80,12 @@ export default class NodeTreeComponent extends Component {
   }
 
   _childrenDeselecting(nodes) {
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       this._nodeDeselect(node, false);
     });
   }
 
-  _nodeDeselect(node, value, date) {
+  _nodeDeselect(node, value) {
     if (!node.isLoading && !node.isEmpty) {
       set(node, 'isSelected', value);
 
