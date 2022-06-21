@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'dummy/tests/helpers';
-import { findAll, render } from '@ember/test-helpers';
+import { click, findAll, render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 import Node from 'dummy/models/node';
 
@@ -27,5 +27,27 @@ module('Integration | Component | node-tree', function (hooks) {
       ['first node', 'second node'],
       'renders nodes in order of @nodes array'
     );
+  });
+
+  test('@onSelection event handler is fired when user clicks on a node', async function (assert) {
+    assert.expect(2);
+
+    this.nodeToBeSelected = new Node({ name: 'target node' });
+    this.nodes = [new Node({ name: 'other node' }), this.nodeToBeSelected];
+    this.onSelection = (selectedNode) => {
+      assert.ok('onSelection event handler is fired');
+      assert.strictEqual(
+        selectedNode,
+        this.nodeToBeSelected,
+        'provides selected node as first argument'
+      );
+    };
+
+    await render(hbs`
+      <NodeTree @nodes={{this.nodes}} @onSelection={{this.onSelection}} as |nt|>
+        <nt.Tree />
+      </NodeTree>/>
+    `);
+    await click('[data-test-node="target node"] .name');
   });
 });
