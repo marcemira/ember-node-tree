@@ -29,6 +29,37 @@ module('Integration | Component | node-tree', function (hooks) {
     );
   });
 
+  test('it renders child nodes if @expandToDepth is set', async function (assert) {
+    this.nodes = [
+      new Node({
+        name: 'parent node',
+        childNodes: [
+          new Node({ name: 'first child node' }),
+          new Node({ name: 'second child node' }),
+        ],
+      }),
+    ];
+
+    await render(hbs`
+      <NodeTree @nodes={{this.nodes}} as |nt|>
+        <nt.Tree @expandToDepth={{2}} />
+      </NodeTree>/>
+    `);
+    assert
+      .dom('[data-test-node="parent node"] [data-test-node]')
+      .exists({ count: 2 }, 'it renders child nodes for parent node');
+    assert
+      .dom('[data-test-node="parent node"] [data-test-node="first child node"]')
+      .hasTextContaining('first child node', 'it renders name of child node');
+    assert.deepEqual(
+      findAll('[data-test-node="parent node"] [data-test-node] .name').map(
+        (el) => el.innerText
+      ),
+      ['first child node', 'second child node'],
+      'renders child nodes in order of childNodes array'
+    );
+  });
+
   test('@onSelection event handler is fired when user clicks on a node', async function (assert) {
     assert.expect(2);
 
