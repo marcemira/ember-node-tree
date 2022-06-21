@@ -1,17 +1,5 @@
 import Controller from '@ember/controller';
-import { tracked } from '@glimmer/tracking';
-// import faker from '@faker-js/faker';
-
-class Node {
-  childNodes;
-  @tracked isExpanded = false;
-  name;
-
-  constructor({ childNodes, name }) {
-    this.childNodes = childNodes ?? [];
-    this.name = name ?? 'Unknown';
-  }
-}
+import Node from '../models/node';
 
 export default class IndexController extends Controller {
   nodes = [
