@@ -81,4 +81,36 @@ module('Integration | Component | node-tree', function (hooks) {
     `);
     await click('[data-test-node="target node"] .name');
   });
+
+  test('@onSelection event handler is fired when user clicks on a child node', async function (assert) {
+    assert.expect(2);
+
+    this.childNodeToBeSelected = new Node({ name: 'target node' });
+    this.nodes = [
+      new Node({
+        name: 'parent node',
+        childNodes: [
+          this.childNodeToBeSelected,
+          new Node({ name: 'another child node' }),
+        ],
+      }),
+    ];
+    this.onSelection = (selectedNode) => {
+      assert.ok('onSelection event handler is fired');
+      assert.strictEqual(
+        selectedNode,
+        this.childNodeToBeSelected,
+        'provides selected node as first argument'
+      );
+    };
+
+    await render(hbs`
+      <NodeTree @nodes={{this.nodes}} @onSelection={{this.onSelection}} as |nt|>
+        <nt.Tree @expandToDepth={{1}} />
+      </NodeTree>/>
+    `);
+    await click(
+      '[data-test-node="parent node"] [data-test-node="target node"] .name'
+    );
+  });
 });
