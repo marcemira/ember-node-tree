@@ -1,9 +1,11 @@
 import Component from '@glimmer/component';
 // eslint-disable-next-line ember/no-computed-properties-in-native-classes
-import { set, action, computed, defineProperty } from '@ember/object';
+import { action, computed, defineProperty } from '@ember/object';
 import { arg } from 'ember-arg-types';
 import { any, object, string, number, func } from 'prop-types';
 import verticalSlide from 'ember-node-tree/transitions/vertical-slide';
+import { TrackedWeakSet } from 'tracked-built-ins';
+import { helper } from '@ember/component/helper';
 
 export default class NodeTreeComponent extends Component {
   @arg(any.isRequired)
@@ -28,6 +30,7 @@ export default class NodeTreeComponent extends Component {
   filterNodesFn;
 
   transition = verticalSlide;
+  selectedNodes = new TrackedWeakSet();
 
   constructor() {
     super(...arguments);
@@ -54,7 +57,9 @@ export default class NodeTreeComponent extends Component {
   @action
   async handleSelection(node) {
     const parent = await node[this.parentNodeName];
-    const nodeSelectedInitialState = node.isSelected;
+    const nodeSelectedInitialState = this.selectedNodes.has(node)
+      ? true
+      : false;
     const rootNode = parent ? await this._findRoot(parent) : node;
 
     if (rootNode[this.childNodesName]?.length) {
@@ -87,11 +92,19 @@ export default class NodeTreeComponent extends Component {
 
   _nodeDeselect(node, value) {
     if (!node.isLoading && !node.isEmpty) {
-      set(node, 'isSelected', value);
+      if (value) {
+        this.selectedNodes.add(node);
+      } else {
+        this.selectedNodes.delete(node);
+      }
 
       if (node[this.childNodesName]?.length) {
         this._childrenDeselecting(node[this.childNodesName]);
       }
     }
   }
+
+  isNodeSelected = helper(([node]) => {
+    return this.selectedNodes.has(node);
+  });
 }

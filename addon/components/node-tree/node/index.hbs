@@ -3,7 +3,7 @@
     local-class="row"
     class={{this.customRowClass}}
     style={{this.computedStyle}}
-    data-is-selected={{if this.node.isSelected "true" "false"}}
+    data-is-selected={{if @isSelected "true" "false"}}
     data-is-hidden={{if this.node.isHidden "true" "false"}}
   >
     {{#if this.shouldDisplayChildNodes}}
