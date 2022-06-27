@@ -60,7 +60,7 @@ module('Integration | Component | node-tree', function (hooks) {
     );
   });
 
-  module('node selection', function () {
+  module('select a node', function () {
     test('user can select and unselect a node', async function (assert) {
       this.nodeToBeSelected = new Node({ name: 'target node' });
       this.nodes = [new Node({ name: 'other node' }), this.nodeToBeSelected];
@@ -249,6 +249,48 @@ module('Integration | Component | node-tree', function (hooks) {
       await click(
         '[data-test-node="parent node"] [data-test-node="target node"] .name'
       );
+    });
+  });
+
+  module('expand a node', function () {
+    test('user can collapse and expand a node', async function (assert) {
+      this.nodes = [
+        new Node({
+          name: 'target node',
+          childNodes: [new Node()],
+        }),
+      ];
+
+      await render(hbs`
+        <NodeTree @nodes={{this.nodes}} as |nt|>
+          <nt.Tree @expandToDepth={{1}} />
+        </NodeTree>/>
+      `);
+      assert
+        .dom('[data-test-node="target node"] > div')
+        .hasAttribute(
+          'data-test-is-expanded',
+          'true',
+          'node is expanded by default'
+        );
+
+      await click('[data-test-node="target node"] [role="button"]');
+      assert
+        .dom('[data-test-node="target node"] > div')
+        .hasAttribute(
+          'data-test-is-expanded',
+          'false',
+          'user can collapse node'
+        );
+
+      await click('[data-test-node="target node"] [role="button"]');
+      assert
+        .dom('[data-test-node="target node"] > div')
+        .hasAttribute(
+          'data-test-is-expanded',
+          'true',
+          'user can expand node again'
+        );
     });
   });
 });

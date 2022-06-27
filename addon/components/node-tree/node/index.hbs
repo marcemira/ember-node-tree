@@ -5,6 +5,7 @@
     style={{this.computedStyle}}
     data-is-selected={{if @isSelected "true" "false"}}
     data-is-hidden={{if this.node.isHidden "true" "false"}}
+    data-test-is-expanded={{if this.node.isExpanded "true" "false"}}
   >
     {{#if this.shouldDisplayChildNodes}}
       {{!-- template-lint-configure require-presentational-children "warn"  --}}
