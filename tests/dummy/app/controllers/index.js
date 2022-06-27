@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import Node from '../models/node';
+import Node from 'ember-node-tree/models/node';
 
 export default class IndexController extends Controller {
   nodes = [
