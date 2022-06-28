@@ -157,7 +157,9 @@ export default class NodeTreeActionsComponent extends Component {
       this.onRemove(node);
     } else {
       if (parentNode) {
-        parentNode[this.childNodesName].removeObject(node);
+        parentNode[this.childNodesName] = parentNode[
+          this.childNodesName
+        ].filter((childNode) => childNode !== node);
       }
     }
 
@@ -175,7 +177,9 @@ export default class NodeTreeActionsComponent extends Component {
           if (this.onRemove) {
             this.onRemove(node);
           } else {
-            parentNode[this.childNodesName].removeObject(node);
+            parentNode[this.childNodesName] = parentNode[
+              this.childNodesName
+            ].filter((childNode) => childNode !== node);
           }
         });
       }
