@@ -57,9 +57,7 @@ export default class NodeTreeComponent extends Component {
   @action
   async handleSelection(node) {
     const parent = await node[this.parentNodeName];
-    const nodeSelectedInitialState = this.selectedNodes.has(node)
-      ? true
-      : false;
+    const nodeSelectedInitialState = this.selectedNodes.has(node);
     const rootNode = parent ? await this._findRoot(parent) : node;
 
     if (rootNode[this.childNodesName]?.length) {
