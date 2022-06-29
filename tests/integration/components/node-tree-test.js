@@ -120,7 +120,7 @@ module('Integration | Component | node-tree', function (hooks) {
         .hasAttribute('data-is-selected', 'false');
     });
 
-    test('unselecting a parent node, unselects all child nodes', async function (assert) {
+    test('unselecting a parent node, does not change selection change of child nodes', async function (assert) {
       this.nodeToBeSelected = new Node({
         name: 'target node',
         childNodes: [
@@ -136,18 +136,15 @@ module('Integration | Component | node-tree', function (hooks) {
         </NodeTree>/>
       `);
 
-      // act: select all nodes
-      // Note: selecting parent node unselects child nodes
+      // act: select some nodes
       await click('[data-test-node="target node"] .name');
       await click('[data-test-node="first child node"] .name');
       await click('[data-test-node="other node"] .name');
-      await click('[data-test-node="second child node"] .name');
 
-      // assert: all nodes are selected
+      // assert: nodes are selected
       for (const nodeName of [
         'target node',
         'first child node',
-        'second child node',
         'other node',
       ]) {
         assert
@@ -155,22 +152,25 @@ module('Integration | Component | node-tree', function (hooks) {
           .hasAttribute('data-is-selected', 'true');
       }
 
+      // assert: other nodes are not selected
+      assert
+        .dom('[data-test-node="second child node"] > div')
+        .hasAttribute('data-is-selected', 'false');
+
       await click('[data-test-node="target node"] .name');
-      for (const nodeName of [
-        'target node',
-        'first child node',
-        'second child node',
-      ]) {
+      for (const nodeName of ['target node', 'second child node']) {
         assert
           .dom(`[data-test-node="${nodeName}"] > div`)
           .hasAttribute('data-is-selected', 'false');
       }
-      assert
-        .dom('[data-test-node="other node"] > div')
-        .hasAttribute('data-is-selected', 'true');
+      for (const nodeName of ['first child node', 'other node']) {
+        assert
+          .dom(`[data-test-node="${nodeName}"] > div`)
+          .hasAttribute('data-is-selected', 'true');
+      }
     });
 
-    test('selecting a parent node unselects previously selected child nodes', async function (assert) {
+    test('selecting a parent node does not unselect previously selected child nodes', async function (assert) {
       this.nodes = [
         new Node({
           name: 'parent node',
@@ -194,7 +194,11 @@ module('Integration | Component | node-tree', function (hooks) {
         .hasAttribute('data-is-selected', 'true', 'parent node is selected');
       assert
         .dom('[data-test-node="child node"] > div')
-        .hasAttribute('data-is-selected', 'false', 'child node is unselected');
+        .hasAttribute(
+          'data-is-selected',
+          'true',
+          'child node is still selected'
+        );
     });
 
     test('@onSelection event handler is fired when user clicks on a node', async function (assert) {
