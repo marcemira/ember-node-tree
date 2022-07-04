@@ -98,9 +98,9 @@ export default class NodeTreeNodeComponent extends Component {
   @action
   handleExpand() {
     if (this.args.isExpanded) {
-      this.args.onCollapseNode();
+      this.args.onCollapseNode(this.args.node);
     } else {
-      this.args.onExpandNode();
+      this.args.onExpandNode(this.args.node);
     }
   }
 }

@@ -19,8 +19,10 @@
         @customNodeComponent={{@customNodeComponent}}
         @customRowClass={{@customRowClass}}
         @filterNodesFn={{@filterNodesFn}}
-        @onExpandNode={{fn this.expandNode node}}
-        @onCollapseNode={{fn this.collapseNode node}}
+        @onExpandNode={{@onExpandNode}}
+        @onCollapseNode={{@onCollapseNode}}
+        @expandedNodes={{@expandedNodes}}
+        @collapsedNodes={{@collapsedNodes}}
         @isExpanded={{this.isNodeExpanded node}}
         @isSelected={{this.isNodeSelected node}}
       />
