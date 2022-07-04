@@ -6,9 +6,9 @@ export default class Node {
   @tracked parentNode;
   @tracked name;
 
-  constructor({ childNodes, name } = {}) {
-    this.childNodes = childNodes ?? new TrackedArray();
-    this.name = name ?? 'Unknown';
+  constructor({ childNodes = [], name = 'Unknown' } = {}) {
+    this.childNodes = new TrackedArray(childNodes);
+    this.name = name;
 
     // set parent node on all child nodes
     for (const childNode of this.childNodes) {
