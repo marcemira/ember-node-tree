@@ -30,7 +30,13 @@ export default class NodeTreeComponent extends Component {
   filterNodesFn;
 
   transition = verticalSlide;
+  expandedNodes = new TrackedWeakSet();
+  collapsedNodes = new TrackedWeakSet();
   selectedNodes = new TrackedWeakSet();
+
+  get shouldExpandNodes() {
+    return !!this.expandToDepth;
+  }
 
   constructor() {
     super(...arguments);
@@ -72,6 +78,18 @@ export default class NodeTreeComponent extends Component {
     }
   }
 
+  @action
+  expandNode(node) {
+    this.expandedNodes.add(node);
+    this.collapsedNodes.delete(node);
+  }
+
+  @action
+  collapseNode(node) {
+    this.collapsedNodes.add(node);
+    this.expandedNodes.delete(node);
+  }
+
   async _findRoot(node) {
     const parentNode = await node[this.parentNodeName];
 
@@ -101,6 +119,14 @@ export default class NodeTreeComponent extends Component {
       }
     }
   }
+
+  isNodeExpanded = helper(([node]) => {
+    return this.expandedNodes.has(node)
+      ? true
+      : this.collapsedNodes.has(node)
+      ? false
+      : this.shouldExpandNodes;
+  });
 
   isNodeSelected = helper(([node]) => {
     return this.selectedNodes.has(node);

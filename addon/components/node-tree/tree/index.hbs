@@ -12,7 +12,6 @@
         @node={{node}}
         @nodeTreeAPI={{@nodeTreeAPI}}
         @defaultIcon={{this.defaultIcon}}
-        @expandToDepth={{@expandToDepth}}
         @nodeModelName={{@nodeModelName}}
         @parentNodeName={{@parentNodeName}}
         @childNodesName={{@childNodesName}}
@@ -20,6 +19,9 @@
         @customNodeComponent={{@customNodeComponent}}
         @customRowClass={{@customRowClass}}
         @filterNodesFn={{@filterNodesFn}}
+        @onExpandNode={{fn this.expandNode node}}
+        @onCollapseNode={{fn this.collapseNode node}}
+        @isExpanded={{this.isNodeExpanded node}}
         @isSelected={{this.isNodeSelected node}}
       />
     {{/animated-each}}

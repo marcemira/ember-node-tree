@@ -5,14 +5,14 @@
     style={{this.computedStyle}}
     data-is-selected={{if @isSelected "true" "false"}}
     data-is-hidden={{if this.node.isHidden "true" "false"}}
-    data-test-is-expanded={{if this.node.isExpanded "true" "false"}}
+    data-test-is-expanded={{if @isExpanded "true" "false"}}
   >
-    {{#if this.shouldDisplayChildNodes}}
+    {{#if this.hasChildNodes}}
       {{!-- template-lint-configure require-presentational-children "warn"  --}}
       <div
         role="button"
         local-class="expand"
-        data-toggle-direction={{if this.node.isExpanded "down" "right"}}
+        data-toggle-direction={{if @isExpanded "down" "right"}}
         {{on "click" this.handleExpand}}
       >
         <svg
@@ -45,9 +45,8 @@
   <AnimatedContainer>
     {{#animated-if
       (and
-        this.shouldLoadChild
-        this.shouldDisplayChildNodes
-        this.node.isExpanded
+        this.hasChildNodes
+        @isExpanded
       )
       use=this.transition
       duration=150
