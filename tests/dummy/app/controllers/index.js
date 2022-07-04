@@ -1,8 +1,9 @@
 import Controller from '@ember/controller';
 import Node from 'ember-node-tree/models/node';
+import { TrackedArray } from 'tracked-built-ins';
 
 export default class IndexController extends Controller {
-  nodes = [
+  nodes = new TrackedArray([
     new Node({
       name: '15',
       childNodes: [new Node({ name: '5' }), new Node({ name: '3' })],
@@ -46,5 +47,5 @@ export default class IndexController extends Controller {
     }),
     new Node({ name: '3' }),
     new Node({ name: '2' }),
-  ];
+  ]);
 }
