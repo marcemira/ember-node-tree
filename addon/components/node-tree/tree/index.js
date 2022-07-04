@@ -32,6 +32,10 @@ export default class NodeTreeComponent extends Component {
   transition = verticalSlide;
   selectedNodes = new TrackedWeakSet();
 
+  get shouldExpandNodes() {
+    return !!this.expandToDepth;
+  }
+
   constructor() {
     super(...arguments);
 
@@ -101,6 +105,14 @@ export default class NodeTreeComponent extends Component {
       }
     }
   }
+
+  isNodeExpanded = helper(([node]) => {
+    return this.args.expandedNodes.has(node)
+      ? true
+      : this.args.collapsedNodes.has(node)
+      ? false
+      : this.shouldExpandNodes;
+  });
 
   isNodeSelected = helper(([node]) => {
     return this.selectedNodes.has(node);

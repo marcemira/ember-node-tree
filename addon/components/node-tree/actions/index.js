@@ -128,7 +128,7 @@ export default class NodeTreeActionsComponent extends Component {
       parentNode[this.childNodesName].push(newNode);
     }
 
-    parentNode.isExpanded = true;
+    this.args.onExpandNode(parentNode);
 
     if (this.onAdd) {
       this.onAdd(newNode);

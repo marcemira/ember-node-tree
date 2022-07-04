@@ -10,6 +10,7 @@ import {
   NODE_PARENT_NODE_PROPERTY_NAME,
   NODE_CHILD_NODE_PROPERTY_NAME,
 } from 'ember-node-tree/utils/default-settings';
+import { TrackedWeakSet } from 'tracked-built-ins';
 
 export default class NodeTreeComponent extends Component {
   @arg(any.isRequired)
@@ -34,6 +35,9 @@ export default class NodeTreeComponent extends Component {
   childNodesName = NODE_CHILD_NODE_PROPERTY_NAME;
 
   @tracked selectedNode;
+
+  expandedNodes = new TrackedWeakSet();
+  collapsedNodes = new TrackedWeakSet();
 
   nodeTreeAPI = {
     onSelection: this.handleOnSelection,
@@ -126,5 +130,17 @@ export default class NodeTreeComponent extends Component {
   @action
   deselectNode() {
     this.selectedNode = null;
+  }
+
+  @action
+  expandNode(node) {
+    this.expandedNodes.add(node);
+    this.collapsedNodes.delete(node);
+  }
+
+  @action
+  collapseNode(node) {
+    this.collapsedNodes.add(node);
+    this.expandedNodes.delete(node);
   }
 }

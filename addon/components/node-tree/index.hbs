@@ -13,6 +13,7 @@
         nodeModelName=this.nodeModelName
         parentNodeName=this.parentNodeName
         childNodesName=this.childNodesName
+        onExpandNode=this.expandNode
       )
       Tree=(component "node-tree/tree"
         nodes=this.nodes
@@ -21,6 +22,10 @@
         parentNodeName=this.parentNodeName
         childNodesName=this.childNodesName
         filterNodesFn=this.filterNodesFn
+        expandedNodes=this.expandedNodes
+        collapsedNodes=this.collapsedNodes
+        onCollapseNode=this.collapseNode
+        onExpandNode=this.expandNode
       )
     )
   }}
