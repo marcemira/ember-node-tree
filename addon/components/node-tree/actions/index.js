@@ -6,6 +6,7 @@ import { arg } from 'ember-arg-types';
 import { sort } from '@ember/object/computed';
 import { any, func, string, boolean, array, object } from 'prop-types';
 import { assert } from '@ember/debug';
+import Node from '../../../models/node';
 
 export default class NodeTreeActionsComponent extends Component {
   @service store;
@@ -116,9 +117,7 @@ export default class NodeTreeActionsComponent extends Component {
         return;
       }
     } else {
-      newNode = {
-        name: 'newNode',
-      };
+      newNode = new Node({ name: 'newNode' });
 
       if (this.useEDS) {
         newNode = this.store.createRecord(this.nodeModelName, newNode);
@@ -126,7 +125,7 @@ export default class NodeTreeActionsComponent extends Component {
     }
 
     if (!this.hasCustomPlacement) {
-      parentNode[this.childNodesName].pushObject(newNode);
+      parentNode[this.childNodesName].push(newNode);
     }
 
     parentNode.isExpanded = true;
@@ -158,7 +157,9 @@ export default class NodeTreeActionsComponent extends Component {
       this.onRemove(node);
     } else {
       if (parentNode) {
-        parentNode[this.childNodesName].removeObject(node);
+        parentNode[this.childNodesName] = parentNode[
+          this.childNodesName
+        ].filter((childNode) => childNode !== node);
       }
     }
 
@@ -176,7 +177,9 @@ export default class NodeTreeActionsComponent extends Component {
           if (this.onRemove) {
             this.onRemove(node);
           } else {
-            parentNode[this.childNodesName].removeObject(node);
+            parentNode[this.childNodesName] = parentNode[
+              this.childNodesName
+            ].filter((childNode) => childNode !== node);
           }
         });
       }
