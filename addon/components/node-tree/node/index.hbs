@@ -29,7 +29,7 @@
     <div
       role="button"
       local-class="row-content"
-      data-has-children={{if this.shouldDisplayChildNodes "true" "false"}}
+      data-has-children={{if this.hasChildNodes "true" "false"}}
       {{on "click" this.handleRowClick}}
     >
       {{#if this.customNodeComponent}}
