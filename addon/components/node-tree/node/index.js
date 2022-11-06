@@ -81,6 +81,11 @@ export default class NodeTreeNodeComponent extends Component {
 
   get hasChildNodes() {
     const childNodes = this.args.node[this.args.childNodesName];
+
+    if (!childNodes) {
+      return false;
+    }
+
     const filterChildNodes = this.args.filterNodesFn
       ? this.args.filterNodesFn(childNodes)
       : childNodes;

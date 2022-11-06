@@ -7,6 +7,7 @@ import { sort } from '@ember/object/computed';
 import { any, func, string, boolean, array, object } from 'prop-types';
 import { assert } from '@ember/debug';
 import Node from '../../../models/node';
+import { TrackedArray } from 'tracked-built-ins';
 
 export default class NodeTreeActionsComponent extends Component {
   @service store;
@@ -125,7 +126,11 @@ export default class NodeTreeActionsComponent extends Component {
     }
 
     if (!this.hasCustomPlacement) {
-      parentNode[this.childNodesName].push(newNode);
+      if (parentNode[this.childNodesName]) {
+        parentNode[this.childNodesName].push(newNode);
+      } else {
+        parentNode[this.childNodesName] = new TrackedArray([newNode]);
+      }
     }
 
     this.args.onExpandNode(parentNode);
