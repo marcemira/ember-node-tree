@@ -53,7 +53,7 @@
     }}
       <NodeTree::Tree
         @icon={{this.icon}}
-        @nodes={{this.node.childNodes}}
+        @nodes={{get this.node this.childNodesName}}
         @nodeTreeAPI={{this.nodeTreeAPI}}
         @defaultIcon={{this.defaultIcon}}
         @onSelection={{this.onSelection}}
