@@ -17,6 +17,11 @@
       >
         {{svg-jar this.arrowToggleIcon class=(local-class "toggle-arrow")}}
       </div>
+    {{else}}
+      <div
+        role="button"
+        local-class="expand"
+      ></div>
     {{/if}}
     <div
       role="button"
@@ -59,6 +64,9 @@
         @collapsedNodes={{@collapsedNodes}}
         @onExpandNode={{@onExpandNode}}
         @onCollapseNode={{@onCollapseNode}}
+        @nodeDepthLeftPaddingBase={{@nodeDepthLeftPaddingBase}}
+        @nodeDepthLeftPaddingAmount={{@nodeDepthLeftPaddingAmount}}
+        @nodeDepthPathLeftPaddingUnit={{@nodeDepthPathLeftPaddingUnit}}
       />
     {{/animated-if}}
   </AnimatedContainer>

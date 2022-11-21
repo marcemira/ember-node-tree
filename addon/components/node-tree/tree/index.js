@@ -87,9 +87,9 @@ export default class NodeTreeComponent extends Component {
   }
 
   _childrenDeselecting(nodes) {
-    nodes.forEach((node) => {
+    for (const node of nodes) {
       this._nodeDeselect(node, false);
-    });
+    };
   }
 
   _nodeDeselect(node, value) {

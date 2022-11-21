@@ -48,17 +48,24 @@ export default class NodeTreeNodeComponent extends Component {
   @arg(string)
   arrowToggleIcon = DEFAULT_ARROW_TOGGLE_ICON;
 
+  @arg()
+  nodeDepthLeftPaddingBase = NODE_DEPTH_LEFT_PADDING_BASE
+
+  @arg()
+  nodeDepthLeftPaddingAmount = NODE_DEPTH_LEFT_PADDING_AMOUNT
+
+  @arg()
+  nodeDepthPathLeftPaddingUnit = NODE_DEPTH_LEFT_PADDING_UNIT
+
   transition = verticalSlide;
 
   get nodeDepth() {
     let parent = get(this.node, this.parentNodeName);
     let depth = 0;
 
-    if (parent) {
-      while (get(parent, this.parentNodeName)) {
-        parent = get(parent, this.parentNodeName);
-        depth++;
-      }
+    while (parent) {
+      parent = get(parent, this.parentNodeName);
+      depth++;
     }
 
     return depth;
@@ -72,14 +79,14 @@ export default class NodeTreeNodeComponent extends Component {
     const depth = this.nodeDepth;
     const hasDepth = depth > 0;
 
-    let paddingAmount = NODE_DEPTH_LEFT_PADDING_BASE;
+    let paddingAmount = this.nodeDepthLeftPaddingBase;
 
     if (hasDepth) {
-      paddingAmount = depth * (paddingAmount + NODE_DEPTH_LEFT_PADDING_AMOUNT);
+      paddingAmount = depth * (paddingAmount + this.nodeDepthLeftPaddingAmount);
     }
 
     return htmlSafe(
-      `padding-left: ${paddingAmount}${NODE_DEPTH_LEFT_PADDING_UNIT};`
+      `padding-left: ${paddingAmount}${this.nodeDepthPathLeftPaddingUnit};`
     );
   }
 
