@@ -7,6 +7,7 @@ import {
   NODE_DEPTH_LEFT_PADDING_BASE,
   NODE_DEPTH_LEFT_PADDING_AMOUNT,
   NODE_DEPTH_LEFT_PADDING_UNIT,
+  DEFAULT_ARROW_TOGGLE_ICON
 } from 'ember-node-tree/utils/default-settings';
 import verticalSlide from 'ember-node-tree/transitions/vertical-slide';
 
@@ -43,6 +44,9 @@ export default class NodeTreeNodeComponent extends Component {
 
   @arg(func)
   filterNodesFn;
+
+  @arg(string)
+  arrowToggleIcon = DEFAULT_ARROW_TOGGLE_ICON;
 
   transition = verticalSlide;
 

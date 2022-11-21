@@ -16,3 +16,5 @@ export const THEME_VARIABLES = {
   hiddenBackground: '--node-tree-hidden-text-color',
   hiddenTextColor: '--node-tree-hidden-text-color',
 };
+
+export const DEFAULT_ARROW_TOGGLE_ICON = 'arrow-down'

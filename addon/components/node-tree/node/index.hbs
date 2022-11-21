@@ -15,15 +15,7 @@
         data-toggle-direction={{if @isExpanded "down" "right"}}
         {{on "click" this.handleExpand}}
       >
-        <svg
-          local-class="toggle-arrow"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 320 320"
-        >
-          <path
-            d="M41.000001 76.475H279c21.4 0 32.1 25.9 17 4l-119 119c-9.4 9.4-24.6 9.4-33.9 0l-119.099999-119c-15.1000001-15.1-4.4-41 17-41z"
-          ></path>
-        </svg>
+        {{svg-jar this.arrowToggleIcon class=(local-class "toggle-arrow")}}
       </div>
     {{/if}}
     <div
